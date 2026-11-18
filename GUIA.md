@@ -276,3 +276,55 @@ pegándolos luego con ffmpeg.
   `.gitignore` y usa un `.env.example` sin valores.
 - Los MP4 se guardan en `videos/` y las imágenes temporales en `.build/` (se borra solo
   en cada ejecución). Puedes añadir ambas a `.gitignore`.
+
+---
+
+## 9. Publicado: GitHub + Vercel
+
+| Qué | Dónde |
+|---|---|
+| **Presentación** (HTML) | <https://clandestino1920.vercel.app> |
+| **Carta y galería de carruseles** | <https://clandestino1920.vercel.app/demo.html> |
+| **Código** | <https://github.com/Borgana/clandestino1920> |
+
+**Para presentar** se usan dos pestañas: la presentación (Vercel) y el panel
+(`python app.py` → `127.0.0.1:5000`). El panel **no** puede estar en Vercel: necesita
+Python, torch y 60 s por petición; Vercel es solo para la parte estática.
+
+### Cuando generes carruseles nuevos
+
+```powershell
+python sync_web.py                          # pasa los carruseles a web/
+git add -A
+git commit -m "nuevos carruseles"
+git push
+vc deploy web --prod --project clandestino1920
+```
+
+`sync_web.py` copia las imágenes, refresca `web/data/carruseles.json` y quita las
+tildes de los nombres (una carpeta `café_solo` rompe las URLs).
+
+### La presentación en HTML
+
+`web/index.html` es la versión web de las diapositivas: 9 slides, tema oscuro, mismas
+fotos y textos. Se maneja con:
+
+| Tecla | Acción |
+|---|---|
+| `→` `espacio` `Intro` | siguiente |
+| `←` `Retroceso` | anterior |
+| `N` | mostrar/ocultar las notas del orador |
+| `F` | pantalla completa |
+
+Dentro de cada diapositiva los textos entran **solos en cascada** (no hay que clicar
+diez veces): es una animación automática al cambiar de slide. Los cambios de diapositiva
+son un fundido suave.
+
+### Editar la presentación
+
+Se edita `web/index.html` directamente (texto plano, sin compilar). Después:
+
+```powershell
+git add web/index.html && git commit -m "presentacion" && git push
+vc deploy web --prod --project clandestino1920
+```
