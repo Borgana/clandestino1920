@@ -1,0 +1,14 @@
+# Dependencias del sistema Clandestino 1920
+# Instalar con:  .venv\Scripts\python.exe -m pip install -r requirements.txt
+#
+# Nota: torch se instala aparte, en versión CPU, para no bajar 2 GB de CUDA:
+#   .venv\Scripts\python.exe -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+
+sentence-transformers>=3.0
+qdrant-client>=1.9
+groq>=0.11
+python-dotenv>=1.0
+requests>=2.32
+tqdm>=4.66
+pillow>=10.0
+flask>=3.0

@@ -1,0 +1,1302 @@
+[
+  {
+    "nombre": "Al Capone Sour",
+    "categoria": "Cócteles",
+    "subcategoria": "Signature",
+    "precio": 7.5,
+    "descripcion": "Desde 2025, este cóctel se sirve en Clandestino como homenaje a los sabores atrevidos y a los espíritus rebeldes de la ley seca.",
+    "ingredientes": ["Gin", "Aperol", "Pomelo", "Clara de huevo"],
+    "alergenos": ["huevo"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Aperol Spritz",
+    "categoria": "Cócteles",
+    "subcategoria": "Clásicos",
+    "precio": 7.5,
+    "descripcion": "Originario del norte de Italia, es el cóctel veraniego por excelencia, famoso por su color y frescura.",
+    "ingredientes": ["Aperol", "Prosecco", "Soda", "Rodaja de naranja"],
+    "alergenos": ["sulfitos"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Bloody Mary",
+    "categoria": "Cócteles",
+    "subcategoria": "Clásicos",
+    "precio": 7.5,
+    "descripcion": "Creado en París en los años 20, su nombre sigue envuelto en misterio entre reinas y leyendas urbanas.",
+    "ingredientes": ["Vodka", "Jugo de tomate", "Jugo de limón", "Salsa Worcestershire", "Tabasco", "Sal"],
+    "alergenos": ["sulfitos", "pescado"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Caipirinha",
+    "categoria": "Cócteles",
+    "subcategoria": "Clásicos",
+    "precio": 7.5,
+    "descripcion": "El alma de Brasil, nacida en São Paulo como remedio medicinal con caña y lima.",
+    "ingredientes": ["Cachaça", "Lima", "Azúcar"],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Carry Belar",
+    "categoria": "Cócteles",
+    "subcategoria": "Signature",
+    "precio": 7.5,
+    "descripcion": "Desde 2025, Carry Belar conquista las noches salmantinas con su mezcla única, reservada solo para los más curiosos del bar.",
+    "ingredientes": ["Whisky", "Anís", "Pomelo", "Clara de huevo"],
+    "alergenos": ["huevo"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Daiquiri",
+    "categoria": "Cócteles",
+    "subcategoria": "Clásicos",
+    "precio": 7.5,
+    "descripcion": "Creado en Cuba, fue el cóctel predilecto de John F. Kennedy y de los literatos bohemios.",
+    "ingredientes": ["Ron blanco", "Jugo de lima", "Jarabe simple"],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Dry Martini",
+    "categoria": "Cócteles",
+    "subcategoria": "Clásicos",
+    "precio": 7.5,
+    "descripcion": "Un icono de sofisticación, inmortalizado por James Bond y por Churchill.",
+    "ingredientes": ["Ginebra seca", "Vermut seco", "Aceituna o twist de limón"],
+    "alergenos": ["sulfitos"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Espresso Martini",
+    "categoria": "Cócteles",
+    "subcategoria": "Signature",
+    "precio": 7.5,
+    "descripcion": "Nació en Londres en los 80, creado para “mantenerte despierto y luego derribarte”.",
+    "ingredientes": ["Vodka", "Licor de café", "Café espresso"],
+    "alergenos": ["sulfitos"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Espresso Tónica",
+    "categoria": "Cócteles",
+    "subcategoria": "Sin alcohol / Café",
+    "precio": 7.5,
+    "descripcion": "Una mezcla moderna que combina la intensidad del café con la frescura de la tónica, tendencia en cafeterías de especialidad.",
+    "ingredientes": ["Café espresso", "Agua tónica", "Hielo", "Rodaja de limón"],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Hugo Spritz",
+    "categoria": "Cócteles",
+    "subcategoria": "Clásicos",
+    "precio": 7.5,
+    "descripcion": "Nacido en el Tirol del Sur en 2005 como alternativa floral al Aperol Spritz, con el sabor dulce de la flor de saúco.",
+    "ingredientes": ["Saint Germain", "Soda", "Cava"],
+    "alergenos": ["sulfitos"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Irish Coffee",
+    "categoria": "Cócteles",
+    "subcategoria": "Café / Calientes",
+    "precio": 7.5,
+    "descripcion": "Inventado en 1943 para reconfortar a viajeros congelados en un aeropuerto de Irlanda.",
+    "ingredientes": ["Whisky irlandés", "Café caliente", "Crema"],
+    "alergenos": ["lactosa"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Margarita",
+    "categoria": "Cócteles",
+    "subcategoria": "Clásicos",
+    "precio": 7.5,
+    "descripcion": "Leyenda mexicana: nació en los años 30, dicen que en honor a una bailarina llamada Margarita.",
+    "ingredientes": ["Tequila", "Triple sec", "Jugo de lima", "Sal (borde)"],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Milano-Torino",
+    "categoria": "Cócteles",
+    "subcategoria": "Clásicos",
+    "precio": 7.5,
+    "descripcion": "Nacido en Italia en 1860, mezcla la tradición de Milán con la elegancia de Turín.",
+    "ingredientes": ["Campari", "Vermut rojo", "Piel de naranja"],
+    "alergenos": ["sulfitos"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Mojito de Fresa/Maracuyá",
+    "categoria": "Cócteles",
+    "subcategoria": "Frutales",
+    "precio": 7.5,
+    "descripcion": "El favorito de Hemingway en La Habana, refrescante y rebelde.",
+    "ingredientes": ["Ron blanco", "Lima", "Azúcar", "Hierbabuena", "Soda", "Puré de fresa o maracuyá"],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Mónaco Mae",
+    "categoria": "Cócteles",
+    "subcategoria": "Signature",
+    "precio": 7.5,
+    "descripcion": "Desde 2025, el Mónaco Mae es el secreto mejor guardado de la casa, creado para quienes buscan un giro inesperado en cada sorbo.",
+    "ingredientes": ["Frangelico", "Limón", "Café", "Ginger ale"],
+    "alergenos": ["frutos secos", "sulfitos"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Moscow Mule",
+    "categoria": "Cócteles",
+    "subcategoria": "Clásicos",
+    "precio": 7.5,
+    "descripcion": "Popularizó el vodka en EE.UU. gracias a su icónica taza de cobre en los años 40.",
+    "ingredientes": ["Vodka", "Jugo de lima", "Cerveza de jengibre"],
+    "alergenos": ["gluten"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Negroni",
+    "categoria": "Cócteles",
+    "subcategoria": "Clásicos",
+    "precio": 7.5,
+    "descripcion": "Inventado en Florencia en 1919, a petición del conde Camillo Negroni, que quería su aperitivo “más fuerte”.",
+    "ingredientes": ["Ginebra", "Vermut rojo", "Campari", "Rodaja de naranja"],
+    "alergenos": ["sulfitos"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Old Fashioned",
+    "categoria": "Cócteles",
+    "subcategoria": "Clásicos",
+    "precio": 7.5,
+    "descripcion": "Considerado el primer cóctel de la historia, destilando pura elegancia desde 1806.",
+    "ingredientes": ["Whisky", "Azúcar", "Angostura", "Twist de naranja"],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Paloma",
+    "categoria": "Cócteles",
+    "subcategoria": "Clásicos",
+    "precio": 7.5,
+    "descripcion": "El cóctel más bebido en México, sencillo y fresco como un atardecer en Jalisco.",
+    "ingredientes": ["Tequila", "Jugo de toronja", "Refresco de toronja", "Jugo de lima"],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Piña Colada",
+    "categoria": "Cócteles",
+    "subcategoria": "Frutales",
+    "precio": 7.5,
+    "descripcion": "Símbolo del Caribe, inventada en Puerto Rico en los años 50 como cóctel de vacaciones eternas.",
+    "ingredientes": ["Ron blanco", "Crema de coco", "Jugo de piña"],
+    "alergenos": ["lactosa"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Pisco Sour",
+    "categoria": "Cócteles",
+    "subcategoria": "Clásicos",
+    "precio": 7.5,
+    "descripcion": "Orgullo del Perú, nació en Lima en la década de 1920 en un bar de expatriados.",
+    "ingredientes": ["Pisco", "Jugo de limón", "Jarabe de goma", "Clara de huevo"],
+    "alergenos": ["huevo"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Tom Collins",
+    "categoria": "Cócteles",
+    "subcategoria": "Clásicos",
+    "precio": 7.5,
+    "descripcion": "Inspirado en una broma popular de 1874 en Nueva York, se convirtió en un clásico atemporal.",
+    "ingredientes": ["Ginebra", "Jugo de limón", "Jarabe simple", "Soda"],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Whisky Sour",
+    "categoria": "Cócteles",
+    "subcategoria": "Clásicos",
+    "precio": 7.5,
+    "descripcion": "Un clásico del siglo XIX, servido a marineros como remedio contra el mareo.",
+    "ingredientes": ["Whisky", "Jugo de limón", "Jarabe de azúcar", "Clara de huevo (opcional)"],
+    "alergenos": ["huevo"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Beefeater",
+    "categoria": "Destilados",
+    "subcategoria": "Ginebra",
+    "precio": 7.5,
+    "descripcion": "London Dry con enebro, cáscaras de naranja de Sevilla, limón, almendra, cilantro y raíz de angélica",
+    "ingredientes": [],
+    "alergenos": ["frutos secos"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Beefeater Light",
+    "categoria": "Destilados",
+    "subcategoria": "Ginebra",
+    "precio": 7.5,
+    "descripcion": "Versión ligera de Beefeater con enebro, cítricos y botánicos clásicos a menor graduación",
+    "ingredientes": [],
+    "alergenos": ["frutos secos"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Bombay",
+    "categoria": "Destilados",
+    "subcategoria": "Ginebra",
+    "precio": 7.5,
+    "descripcion": "Ginebra Bombay Dry con enebro, cortezas de limón y especias suaves",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Bombay Sapphire",
+    "categoria": "Destilados",
+    "subcategoria": "Ginebra",
+    "precio": 8,
+    "descripcion": "Ginebra Bombay Sapphire con enebro, almendra, granos del paraíso y cáscaras de cítricos",
+    "ingredientes": [],
+    "alergenos": ["frutos secos"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Brockmans",
+    "categoria": "Destilados",
+    "subcategoria": "Ginebra",
+    "precio": 9,
+    "descripcion": "Ginebra premium con enebro, arándano, mora, piel de naranja y notas florales y especiadas.",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Bulldog",
+    "categoria": "Destilados",
+    "subcategoria": "Ginebra",
+    "precio": 8,
+    "descripcion": "Ginebra moderna con enebro, ojo de dragón, amapola, regaliz y cítricos",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Citadelle",
+    "categoria": "Destilados",
+    "subcategoria": "Ginebra",
+    "precio": 9,
+    "descripcion": "Ginebra francesa con 19 botánicos, entre ellos enebro, regaliz, violeta y cáscara de naranja",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "G'Vine",
+    "categoria": "Destilados",
+    "subcategoria": "Ginebra",
+    "precio": 10,
+    "descripcion": "Ginebra francesa destilada de uva Ugni Blanc con enebro, flor de vid, jengibre y cardamomo",
+    "ingredientes": [],
+    "alergenos": ["sulfitos"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Giró",
+    "categoria": "Destilados",
+    "subcategoria": "Ginebra",
+    "precio": 7.5,
+    "descripcion": "Licor Giró con notas dulces y especiadas, ideal para cócteles clásicos",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Gin Mare",
+    "categoria": "Destilados",
+    "subcategoria": "Ginebra",
+    "precio": 9,
+    "descripcion": "Ginebra mediterránea con enebro, aceituna arbequina, tomillo, albahaca y romero",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Gin MG",
+    "categoria": "Destilados",
+    "subcategoria": "Ginebra",
+    "precio": 7.5,
+    "descripcion": "Ginebra española con enebro mediterráneo, cilantro y cáscara de limón",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Gordons",
+    "categoria": "Destilados",
+    "subcategoria": "Ginebra",
+    "precio": 7.5,
+    "descripcion": "Licor Gordons con sabor suave y aroma fresco, perfecto para mezclas",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Hendrick's",
+    "categoria": "Destilados",
+    "subcategoria": "Ginebra",
+    "precio": 10,
+    "descripcion": "Ginebra escocesa infusionada con enebro, pepino fresco y pétalos de rosa",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "J.Rose",
+    "categoria": "Destilados",
+    "subcategoria": "Ginebra",
+    "precio": 12,
+    "descripcion": "Ginebra italiana aromática con enebro, cítricos y especias suaves",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Larios",
+    "categoria": "Destilados",
+    "subcategoria": "Ginebra",
+    "precio": 7.5,
+    "descripcion": "Ginebra mediterránea con enebro, naranjas amargas, limones de Murcia y cilantro",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Larios 12",
+    "categoria": "Destilados",
+    "subcategoria": "Ginebra",
+    "precio": 7.5,
+    "descripcion": "Ginebra con 12 botánicos mediterráneos: enebro, cítricos, nuez moscada y flor de azahar",
+    "ingredientes": [],
+    "alergenos": ["frutos secos"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "London 10",
+    "categoria": "Destilados",
+    "subcategoria": "Ginebra",
+    "precio": 10,
+    "descripcion": "Ginebra de carácter clásico, con enebro intenso, notas cítricas frescas y un toque equilibrado de especias aromáticas.",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Martin Miller's",
+    "categoria": "Destilados",
+    "subcategoria": "Ginebra",
+    "precio": 9,
+    "descripcion": "Ginebra destilada en Inglaterra y mezclada con agua islandesa; enebro, raíz de lirio y cítricos",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Másters",
+    "categoria": "Destilados",
+    "subcategoria": "Ginebra",
+    "precio": 7.5,
+    "descripcion": "Ginebra española estilo London Dry con enebro, cilantro y pieles de cítricos",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Mombasa",
+    "categoria": "Destilados",
+    "subcategoria": "Ginebra",
+    "precio": 9,
+    "descripcion": "Ginebra estilo colonial con enebro, clavo, comino y cáscaras de cítricos",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Monkey 47",
+    "categoria": "Destilados",
+    "subcategoria": "Ginebra",
+    "precio": 12,
+    "descripcion": "Ginebra alemana con 47 botánicos, destacando enebro, arándano rojo y cítricos",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Nordés",
+    "categoria": "Destilados",
+    "subcategoria": "Ginebra",
+    "precio": 9,
+    "descripcion": "Ginebra gallega de uva albariño con enebro, laurel, eucalipto y salvia",
+    "ingredientes": [],
+    "alergenos": ["sulfitos"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Plymouth",
+    "categoria": "Destilados",
+    "subcategoria": "Ginebra",
+    "precio": 8,
+    "descripcion": "Ginebra estilo Plymouth con enebro suave, raíz de lirio, cardamomo y cáscara de limón",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Puerto de Indias",
+    "categoria": "Destilados",
+    "subcategoria": "Ginebra",
+    "precio": 7.5,
+    "descripcion": "Ginebra afrutada con enebro y fresa, de carácter dulce y aromático",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Roku",
+    "categoria": "Destilados",
+    "subcategoria": "Ginebra",
+    "precio": 9,
+    "descripcion": "Ginebra japonesa con enebro y seis botánicos nipones: yuzu, té sencha, té gyokuro y flores de sakura",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Seagram's",
+    "categoria": "Destilados",
+    "subcategoria": "Ginebra",
+    "precio": 7.5,
+    "descripcion": "Ginebra seca americana con enebro, cilantro, cortezas de naranja y canela",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Seagram's 0.0",
+    "categoria": "Destilados",
+    "subcategoria": "Ginebra / Sin alcohol",
+    "precio": 7.5,
+    "descripcion": "Ginebra 0.0 inspirada en Seagram's, con perfil botánico de enebro y cítricos sin alcohol",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Sipsmith",
+    "categoria": "Destilados",
+    "subcategoria": "Ginebra",
+    "precio": 10,
+    "descripcion": "Ginebra London Dry con enebro, cilantro y especias",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Tanqueray",
+    "categoria": "Destilados",
+    "subcategoria": "Ginebra",
+    "precio": 7.5,
+    "descripcion": "Ginebra London Dry clásica con enebro, cilantro, regaliz y angélica",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Tanqueray Rangpur",
+    "categoria": "Destilados",
+    "subcategoria": "Ginebra",
+    "precio": 9,
+    "descripcion": "Ginebra Tanqueray con lima Rangpur, enebro y notas cítricas intensas",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Tanqueray 10",
+    "categoria": "Destilados",
+    "subcategoria": "Ginebra",
+    "precio": 12,
+    "descripcion": "Ginebra premium destilada con cítricos frescos, enebro y flores; suave y aromática",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Arehucas",
+    "categoria": "Destilados",
+    "subcategoria": "Ron",
+    "precio": 7.5,
+    "descripcion": "Ron canario con sabor suave y aroma dulce de caña",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Bacardi",
+    "categoria": "Destilados",
+    "subcategoria": "Ron",
+    "precio": 7.5,
+    "descripcion": "Ron dominicano con notas a vainilla, frutas secas y caramelo",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Barceló",
+    "categoria": "Destilados",
+    "subcategoria": "Ron",
+    "precio": 7.5,
+    "descripcion": "Ron dominicano con notas a vainilla, frutas secas y caramelo",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Brugal",
+    "categoria": "Destilados",
+    "subcategoria": "Ron",
+    "precio": 7.5,
+    "descripcion": "Ron dominicano seco con ligeros matices de madera y caramelo",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Brugal Extra",
+    "categoria": "Destilados",
+    "subcategoria": "Ron",
+    "precio": 8,
+    "descripcion": "Ron dominicano extra añejo con vainilla, caramelo y roble",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Cacique",
+    "categoria": "Destilados",
+    "subcategoria": "Ron",
+    "precio": 7.5,
+    "descripcion": "Ron venezolano con aromas a frutas tropicales y madera",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Captain Morgan Dark",
+    "categoria": "Destilados",
+    "subcategoria": "Ron",
+    "precio": 7.5,
+    "descripcion": "Ron especiado con notas de vainilla, canela y frutas",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Captain Morgan Spiced Gold",
+    "categoria": "Destilados",
+    "subcategoria": "Ron",
+    "precio": 7.5,
+    "descripcion": "Ron especiado con notas de vainilla, canela y frutas",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Dos Maderas",
+    "categoria": "Destilados",
+    "subcategoria": "Ron",
+    "precio": 12,
+    "descripcion": "Ron con un envejecimiento de 5 años en el Caribe y 3 años en Jerez",
+    "ingredientes": [],
+    "alergenos": ["sulfitos"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Flor de Caña 5",
+    "categoria": "Destilados",
+    "subcategoria": "Ron",
+    "precio": 7.5,
+    "descripcion": "Ron nicaragüense con notas de roble, vainilla y cacao",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Flor de Caña 7",
+    "categoria": "Destilados",
+    "subcategoria": "Ron",
+    "precio": 8,
+    "descripcion": "Ron nicaragüense 7 años con notas de cacao, café y roble",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Flor de Caña 12",
+    "categoria": "Destilados",
+    "subcategoria": "Ron",
+    "precio": 9,
+    "descripcion": "Ron nicaragüense 12 años con notas de chocolate, frutos secos y roble",
+    "ingredientes": [],
+    "alergenos": ["frutos secos"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Havana",
+    "categoria": "Destilados",
+    "subcategoria": "Ron",
+    "precio": 7.5,
+    "descripcion": "Ron cubano clásico con notas de vainilla, plátano y roble",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Imperial",
+    "categoria": "Destilados",
+    "subcategoria": "Ron",
+    "precio": 9,
+    "descripcion": "Ron Barceló Imperial con notas de roble, fruta madura y cacao",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Legendario",
+    "categoria": "Destilados",
+    "subcategoria": "Ron",
+    "precio": 7.5,
+    "descripcion": "Ron cubano dulce con matices de pasas, vainilla y toffee",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Mantuano",
+    "categoria": "Destilados",
+    "subcategoria": "Ron",
+    "precio": 9,
+    "descripcion": "Ron venezolano Diplomático Mantuano con frutas secas, vainilla y especias",
+    "ingredientes": [],
+    "alergenos": ["frutos secos"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Matusalém 10",
+    "categoria": "Destilados",
+    "subcategoria": "Ron",
+    "precio": 8,
+    "descripcion": "Ron envejecido 10 años con notas de madera tostada, miel y especias",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Matusalém 7",
+    "categoria": "Destilados",
+    "subcategoria": "Ron",
+    "precio": 7.5,
+    "descripcion": "Ron cubano envejecido con notas de caramelo, madera y especias",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Negrita",
+    "categoria": "Destilados",
+    "subcategoria": "Ron",
+    "precio": 7.5,
+    "descripcion": "Ron con sabor suave y notas de cereal y vainilla",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Pampero",
+    "categoria": "Destilados",
+    "subcategoria": "Ron",
+    "precio": 7.5,
+    "descripcion": "Ron dominicano con notas a vainilla, frutas secas y caramelo",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Santa Teresa",
+    "categoria": "Destilados",
+    "subcategoria": "Ron",
+    "precio": 7.5,
+    "descripcion": "Ron venezolano con aroma a caña dulce, frutas y vainilla",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Santa Teresa 1796",
+    "categoria": "Destilados",
+    "subcategoria": "Ron",
+    "precio": 14,
+    "descripcion": "Ron Diplomático 1796, acabado en barricas de jerez; complejo y sedoso",
+    "ingredientes": [],
+    "alergenos": ["sulfitos"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Kraken",
+    "categoria": "Destilados",
+    "subcategoria": "Ron",
+    "precio": 12,
+    "descripcion": "Ron especiado Kraken con notas de vainilla, canela y especias exóticas",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Zacapa",
+    "categoria": "Destilados",
+    "subcategoria": "Ron",
+    "precio": 15,
+    "descripcion": "Ron guatemalteco añejado en sistema solera con notas de miel, especias y frutos secos",
+    "ingredientes": [],
+    "alergenos": ["frutos secos"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Absolut",
+    "categoria": "Destilados",
+    "subcategoria": "Vodka",
+    "precio": 7.5,
+    "descripcion": "Vodka sueco puro con notas suaves de cereal y un toque dulce",
+    "ingredientes": [],
+    "alergenos": ["gluten"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Belvedere",
+    "categoria": "Destilados",
+    "subcategoria": "Vodka",
+    "precio": 12,
+    "descripcion": "Vodka polaco de centeno con textura cremosa y sabor limpio",
+    "ingredientes": [],
+    "alergenos": ["gluten"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Finlandia",
+    "categoria": "Destilados",
+    "subcategoria": "Vodka",
+    "precio": 8,
+    "descripcion": "Vodka finlandés cristalino con notas frescas y ligeras",
+    "ingredientes": [],
+    "alergenos": ["gluten"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Grey Goose",
+    "categoria": "Destilados",
+    "subcategoria": "Vodka",
+    "precio": 11,
+    "descripcion": "Vodka francés ultra premium con sabor limpio y sedoso",
+    "ingredientes": [],
+    "alergenos": ["gluten"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Moskovskaya",
+    "categoria": "Destilados",
+    "subcategoria": "Vodka",
+    "precio": 7.5,
+    "descripcion": "Vodka ruso tradicional con sabor neutro y ligeramente especiado",
+    "ingredientes": [],
+    "alergenos": ["gluten"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Stolichnaya",
+    "categoria": "Destilados",
+    "subcategoria": "Vodka",
+    "precio": 7.5,
+    "descripcion": "Vodka ruso clásico con notas de grano y pimienta blanca",
+    "ingredientes": [],
+    "alergenos": ["gluten"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Ballantine's",
+    "categoria": "Destilados",
+    "subcategoria": "Whisky",
+    "precio": 7.5,
+    "descripcion": "Blended whisky escocés con mezcla de miel, manzana y roble",
+    "ingredientes": [],
+    "alergenos": ["gluten"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Ballantine's 10",
+    "categoria": "Destilados",
+    "subcategoria": "Whisky",
+    "precio": 7.5,
+    "descripcion": "Blended whisky escocés con mezcla de miel, manzana y roble",
+    "ingredientes": [],
+    "alergenos": ["gluten"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Black Label",
+    "categoria": "Destilados",
+    "subcategoria": "Whisky",
+    "precio": 9,
+    "descripcion": "Blended scotch 12 años con notas de humo suave, frutos secos y roble",
+    "ingredientes": [],
+    "alergenos": ["gluten", "frutos secos"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "DYC",
+    "categoria": "Destilados",
+    "subcategoria": "Whisky",
+    "precio": 7.5,
+    "descripcion": "Whisky español con notas suaves de cereal y madera",
+    "ingredientes": [],
+    "alergenos": ["gluten"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "DYC 8",
+    "categoria": "Destilados",
+    "subcategoria": "Whisky",
+    "precio": 7.5,
+    "descripcion": "Whisky español 8 años con roble tostado, especias y caramelo",
+    "ingredientes": [],
+    "alergenos": ["gluten"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Glen Rothes",
+    "categoria": "Destilados",
+    "subcategoria": "Whisky",
+    "precio": 12,
+    "descripcion": "Whisky escocés con sabores cítricos, malta y especias suaves",
+    "ingredientes": [],
+    "alergenos": ["gluten"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Glenfiddich",
+    "categoria": "Destilados",
+    "subcategoria": "Whisky",
+    "precio": 12,
+    "descripcion": "Whisky de malta escocés con notas de pera, roble y malta dulce",
+    "ingredientes": [],
+    "alergenos": ["gluten"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Jack Daniel's",
+    "categoria": "Destilados",
+    "subcategoria": "Whisky",
+    "precio": 8,
+    "descripcion": "Tennessee whiskey con sabor dulce a vainilla y caramelo",
+    "ingredientes": [],
+    "alergenos": ["gluten"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "JB",
+    "categoria": "Destilados",
+    "subcategoria": "Whisky",
+    "precio": 7.5,
+    "descripcion": "Blended whisky escocés con sabor ligero a malta y roble",
+    "ingredientes": [],
+    "alergenos": ["gluten"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Jameson",
+    "categoria": "Destilados",
+    "subcategoria": "Whisky",
+    "precio": 7.5,
+    "descripcion": "Whisky irlandés suave con notas de nuez, vainilla y caramelo",
+    "ingredientes": [],
+    "alergenos": ["gluten", "frutos secos"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Jim Beam",
+    "categoria": "Destilados",
+    "subcategoria": "Whisky",
+    "precio": 7.5,
+    "descripcion": "Bourbon americano con vainilla dulce, maíz y notas de caramelo",
+    "ingredientes": [],
+    "alergenos": ["gluten"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Macallan",
+    "categoria": "Destilados",
+    "subcategoria": "Whisky",
+    "precio": 16,
+    "descripcion": "Whisky escocés de malta con notas de roble, vainilla y frutas secas",
+    "ingredientes": [],
+    "alergenos": ["gluten", "frutos secos"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Nikka",
+    "categoria": "Destilados",
+    "subcategoria": "Whisky",
+    "precio": 12,
+    "descripcion": "Whisky japonés equilibrado con manzana, especias y roble",
+    "ingredientes": [],
+    "alergenos": ["gluten"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Red Label",
+    "categoria": "Destilados",
+    "subcategoria": "Whisky",
+    "precio": 7.5,
+    "descripcion": "Blended whisky escocés con carácter ahumado y especiado",
+    "ingredientes": [],
+    "alergenos": ["gluten"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Toki Suntory",
+    "categoria": "Destilados",
+    "subcategoria": "Whisky",
+    "precio": 12,
+    "descripcion": "Whisky japonés suave y equilibrado, con notas de fruta y miel",
+    "ingredientes": [],
+    "alergenos": ["gluten"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "White Label",
+    "categoria": "Destilados",
+    "subcategoria": "Whisky",
+    "precio": 7.5,
+    "descripcion": "Blended whisky escocés ligero y meloso, con toques de vainilla y cereal",
+    "ingredientes": [],
+    "alergenos": ["gluten"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "818",
+    "categoria": "Destilados",
+    "subcategoria": "Tequila",
+    "precio": 14,
+    "descripcion": "Tequila con notas de agave, vainilla y un toque de roble",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Herradura",
+    "categoria": "Destilados",
+    "subcategoria": "Tequila",
+    "precio": 12,
+    "descripcion": "Tequila con notas de agave, vainilla y un toque de roble",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Jose Cuervo",
+    "categoria": "Destilados",
+    "subcategoria": "Tequila",
+    "precio": 7.5,
+    "descripcion": "Tequila tradicional con sabor equilibrado entre dulce y picante",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Silver Patrón",
+    "categoria": "Destilados",
+    "subcategoria": "Tequila",
+    "precio": 14,
+    "descripcion": "Tequila con notas de agave, vainilla y un toque de roble",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "1906",
+    "categoria": "Cervezas",
+    "subcategoria": "Tostada",
+    "precio": 3.5,
+    "descripcion": "Cerveza tostada con notas a malta y caramelo",
+    "ingredientes": [],
+    "alergenos": ["gluten"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Alhambra 1925",
+    "categoria": "Cervezas",
+    "subcategoria": "Premium",
+    "precio": 3.5,
+    "descripcion": "Cerveza premium, cuerpo y sabor equilibrado",
+    "ingredientes": [],
+    "alergenos": ["gluten"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Budweiser",
+    "categoria": "Cervezas",
+    "subcategoria": "Rubia",
+    "precio": 3.5,
+    "descripcion": "Cerveza americana, ligera y refrescante",
+    "ingredientes": [],
+    "alergenos": ["gluten"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Corona",
+    "categoria": "Cervezas",
+    "subcategoria": "Rubia",
+    "precio": 3.5,
+    "descripcion": "Cerveza mexicana ligera y refrescante",
+    "ingredientes": [],
+    "alergenos": ["gluten"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Desperados",
+    "categoria": "Cervezas",
+    "subcategoria": "Saborizada",
+    "precio": 3.5,
+    "descripcion": "Cerveza con aroma y sabor a tequila",
+    "ingredientes": [],
+    "alergenos": ["gluten"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Estrella Galicia 0.0 Tostada",
+    "categoria": "Cervezas",
+    "subcategoria": "Sin alcohol",
+    "precio": 3,
+    "descripcion": "Cerveza sin alcohol, sabor tostado",
+    "ingredientes": [],
+    "alergenos": ["gluten"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Estrella Galicia (Caña)",
+    "categoria": "Cervezas",
+    "subcategoria": "Rubia",
+    "precio": 3,
+    "descripcion": "Cerveza rubia, suave y refrescante",
+    "ingredientes": [],
+    "alergenos": ["gluten"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Estrella Galicia",
+    "categoria": "Cervezas",
+    "subcategoria": "Rubia",
+    "precio": 3,
+    "descripcion": "Cerveza rubia en formato botellín",
+    "ingredientes": [],
+    "alergenos": ["gluten"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Estrella Galicia Botellín Sin Gluten",
+    "categoria": "Cervezas",
+    "subcategoria": "Sin gluten",
+    "precio": 3,
+    "descripcion": "Cerveza rubia en formato botellín sin gluten",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Franciskaner",
+    "categoria": "Cervezas",
+    "subcategoria": "Trigo",
+    "precio": 4,
+    "descripcion": "Cerveza de trigo alemana, sabor afrutado",
+    "ingredientes": [],
+    "alergenos": ["gluten"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "La Pelirroja",
+    "categoria": "Cervezas",
+    "subcategoria": "Roja artesanal",
+    "precio": 3.5,
+    "descripcion": "Cerveza roja artesanal de Estrella Galicia, con malta caramelizada y notas afrutadas.",
+    "ingredientes": [],
+    "alergenos": ["gluten"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "La Salve",
+    "categoria": "Cervezas",
+    "subcategoria": "Roja artesanal",
+    "precio": 3.5,
+    "descripcion": "Cerveza roja artesanal de Bilbao, con malta tostada y matices afrutados.",
+    "ingredientes": [],
+    "alergenos": ["gluten"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Mahou 5 Estrellas",
+    "categoria": "Cervezas",
+    "subcategoria": "Rubia",
+    "precio": 3,
+    "descripcion": "Cerveza rubia, suave y refrescante",
+    "ingredientes": [],
+    "alergenos": ["gluten"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Pinna Fidelis",
+    "categoria": "Vinos",
+    "subcategoria": "Tinto",
+    "precio": 3.5,
+    "descripcion": "Vino tinto, notas de frutos rojos y madera",
+    "ingredientes": [],
+    "alergenos": ["sulfitos"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Rueda Javier Sanz",
+    "categoria": "Vinos",
+    "subcategoria": "Blanco",
+    "precio": 3.5,
+    "descripcion": "Vino blanco, notas cítricas y florales",
+    "ingredientes": [],
+    "alergenos": ["sulfitos"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Café solo",
+    "categoria": "Otros",
+    "subcategoria": "Café",
+    "precio": 2,
+    "descripcion": "Café solo",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Capuchino",
+    "categoria": "Otros",
+    "subcategoria": "Café",
+    "precio": 2.5,
+    "descripcion": "Café, leche y espuma de leche",
+    "ingredientes": [],
+    "alergenos": ["lactosa"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Carajillo",
+    "categoria": "Otros",
+    "subcategoria": "Café / Licor",
+    "precio": 2.5,
+    "descripcion": "Café con licor (generalmente brandy o whisky)",
+    "ingredientes": [],
+    "alergenos": ["gluten"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Bombón",
+    "categoria": "Otros",
+    "subcategoria": "Café",
+    "precio": 2.5,
+    "descripcion": "Café con leche condensada",
+    "ingredientes": [],
+    "alergenos": ["lactosa"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Refresco",
+    "categoria": "Otros",
+    "subcategoria": "Refrescos",
+    "precio": 3,
+    "descripcion": "Coca-Cola, Fanta, Sprite, etc.",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Chupito de tequila o mezcal",
+    "categoria": "Otros",
+    "subcategoria": "Chupitos",
+    "precio": null,
+    "descripcion": "Tequila o mezcal servido en chupito",
+    "ingredientes": [],
+    "alergenos": [],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Licor de café",
+    "categoria": "Otros",
+    "subcategoria": "Licores",
+    "precio": 5.5,
+    "descripcion": "Licor elaborado a base de café",
+    "ingredientes": [],
+    "alergenos": ["sulfitos"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Licor de crema",
+    "categoria": "Otros",
+    "subcategoria": "Licores",
+    "precio": 5.5,
+    "descripcion": "Licor elaborado a base de crema",
+    "ingredientes": [],
+    "alergenos": ["lactosa"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Licor de orujo",
+    "categoria": "Otros",
+    "subcategoria": "Licores",
+    "precio": 5.5,
+    "descripcion": "Licor elaborado a base de orujo de uva",
+    "ingredientes": [],
+    "alergenos": ["sulfitos"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Baileys",
+    "categoria": "Otros",
+    "subcategoria": "Licores",
+    "precio": 7,
+    "descripcion": "Licor de crema irlandesa",
+    "ingredientes": [],
+    "alergenos": ["lactosa"],
+    "imagen_url": null
+  },
+  {
+    "nombre": "Tinto de verano",
+    "categoria": "Otros",
+    "subcategoria": "Combinados",
+    "precio": 5,
+    "descripcion": "Vermouth, Limón y vino",
+    "ingredientes": [],
+    "alergenos": ["sulfitos"],
+    "imagen_url": null
+  }
+]

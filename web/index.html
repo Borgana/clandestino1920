@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clandestino 1920 · Presentación</title>
+<style>
+  :root{
+    --bg:#0E0C0A; --panel:#17130F; --panel2:#221B12;
+    --gold:#C69E60; --gold-soft:#E3C795; --cream:#F2EAD9; --muted:#A2917A;
+  }
+  *{box-sizing:border-box; margin:0; padding:0}
+  html,body{height:100%; background:var(--bg); overflow:hidden;
+    font-family:Georgia,'Times New Roman',serif; color:var(--cream)}
+
+  #fit{position:fixed; inset:0; display:grid; place-items:center; overflow:hidden;
+    background:radial-gradient(1200px 700px at 50% -10%, #241C13 0%, var(--bg) 60%)}
+
+  #stage{position:relative; width:1280px; height:720px; transform-origin:center center;
+    transform:scale(var(--s,.8)); background:var(--bg); overflow:hidden;
+    box-shadow:0 40px 120px rgba(0,0,0,.6)}
+
+  /* ---------- diapositivas ---------- */
+  .slide{position:absolute; inset:0;
+    opacity:0; visibility:hidden; transform:translateY(20px) scale(.995);
+    transition:opacity .55s ease, transform .55s cubic-bezier(.22,.8,.3,1);
+    pointer-events:none}
+  .slide.on{opacity:1; visibility:visible; transform:none; pointer-events:auto}
+
+  /* elementos animados (entrada escalonada, automática: sin clics) */
+  .anim{opacity:0; transform:translateY(26px);
+    transition:opacity .75s cubic-bezier(.22,.8,.3,1), transform .75s cubic-bezier(.22,.8,.3,1);
+    transition-delay:calc(var(--i,0) * 85ms)}
+  .slide.on .anim{opacity:1; transform:none}
+
+  /* foto lateral con ken burns suave */
+  .side{position:absolute; top:0; right:0; width:500px; height:720px; overflow:hidden}
+  .side img{width:100%; height:100%; object-fit:cover; filter:saturate(.92) contrast(1.03)}
+  .slide.on .side img{animation:kb 14s ease-out both}
+  @keyframes kb{from{transform:scale(1.09)} to{transform:scale(1)}}
+  .side::after{content:''; position:absolute; inset:0;
+    background:linear-gradient(90deg, var(--bg) 0%, rgba(14,12,10,.72) 18%, rgba(14,12,10,0) 45%)}
+
+  .eyebrow{font-size:13px; letter-spacing:3.4px; color:var(--gold); font-weight:bold;
+    text-transform:uppercase}
+  h1{font-size:74px; line-height:.94; font-weight:bold; letter-spacing:-1px}
+  h2{font-size:40px; font-weight:bold; line-height:1.1}
+  .rule{width:90px; height:3px; background:var(--gold); margin:26px 0}
+  .lead{font-size:29px; font-style:italic; color:var(--gold-soft)}
+  .p{font-size:17px; line-height:1.65; color:var(--muted)}
+  .small{font-size:12.5px; color:var(--muted)}
+  .quote{font-size:19px; font-style:italic; color:var(--gold-soft)}
+
+  .card{background:var(--panel); border:1px solid #2A2118; border-radius:14px; padding:26px 28px}
+  .card.gold{border-color:var(--gold); background:var(--panel2)}
+
+  .kpi{font-size:56px; font-weight:bold; color:var(--gold); line-height:1}
+  .kpi-lbl{font-size:14px; color:var(--muted); margin-top:12px}
+
+  .num{font-size:27px; color:var(--gold); font-weight:bold; letter-spacing:1px}
+  .step-title{font-size:21px; font-weight:bold; margin-top:14px; line-height:1.2}
+  .step-txt{font-size:14.5px; color:var(--muted); line-height:1.5; margin-top:12px}
+
+  .bullet{font-size:17.5px; line-height:1.6; margin-bottom:22px; padding-left:22px; position:relative}
+  .bullet::before{content:''; position:absolute; left:0; top:11px; width:8px; height:8px;
+    border-radius:50%; background:var(--gold)}
+
+  .bar-row{display:flex; align-items:center; gap:18px; margin-bottom:19px}
+  .bar-row .lbl{width:330px; font-size:16px}
+  .track{flex:1; height:7px; background:#2A2118; border-radius:4px; overflow:hidden}
+  .fill{height:100%; background:var(--gold); border-radius:4px; width:0;
+    transition:width 1.1s cubic-bezier(.22,.8,.3,1); transition-delay:.45s}
+  .slide.on .fill{width:var(--w)}
+  .val{width:56px; text-align:right; font-size:14.5px; color:var(--gold-soft)}
+
+  .thumbs{display:flex; gap:18px}
+  .thumbs figure{width:250px; height:312px; border-radius:10px; overflow:hidden;
+    border:1px solid #2A2118}
+  .thumbs img{width:100%; height:100%; object-fit:cover; transition:transform .8s ease}
+  .slide.on .thumbs figure img{animation:kb 16s ease-out both}
+
+  /* ---------- HUD ---------- */
+  #hud{position:fixed; left:0; right:0; bottom:0; height:44px; display:flex;
+    align-items:center; gap:16px; padding:0 26px; font-size:12.5px; color:var(--muted);
+    font-family:Georgia,serif; pointer-events:none; z-index:5}
+  #dots{position:fixed; top:22px; right:26px; display:flex; gap:8px; z-index:5}
+  .dot{width:7px; height:7px; border-radius:50%; background:#3A2F22; transition:.3s}
+  .dot.on{background:var(--gold); transform:scale(1.35)}
+  #progress{position:fixed; left:0; top:0; height:2px; background:var(--gold);
+    width:0; transition:width .45s ease; z-index:6}
+  #count{position:fixed; left:26px; bottom:16px; font-size:12.5px; color:var(--muted); z-index:5}
+  #hint{position:fixed; right:26px; bottom:14px; font-size:11.5px; color:#5C4E3B; z-index:5}
+  kbd{font-family:inherit; color:var(--gold-soft)}
+
+  /* ---------- notas del orador ---------- */
+  #notes{position:fixed; left:0; right:0; bottom:0; max-height:34vh; overflow:auto;
+    background:rgba(10,8,7,.97); border-top:1px solid var(--gold); padding:18px 26px 24px;
+    font-size:14px; line-height:1.6; color:var(--cream); white-space:pre-wrap;
+    transform:translateY(101%); transition:transform .35s ease; z-index:7}
+  #notes.on{transform:none}
+</style>
+</head>
+<body>
+<div id="fit">
+<div id="stage">
+
+  <!-- 1 · PORTADA -->
+  <section class="slide">
+    <div class="side"><img src="img/local/interior_01.jpg" alt="Interior del Clandestino 1920"></div>
+    <div style="position:absolute; left:76px; top:108px; width:660px">
+      <div class="eyebrow anim">Proyecto final · Bootcamp de IA</div>
+      <h1 class="anim" style="margin-top:26px">CLANDESTINO<br>1920</h1>
+      <div class="rule anim"></div>
+      <div class="lead anim">El bar que se cuenta solo</div>
+      <p class="p anim" style="margin-top:34px; width:540px">
+        Un sistema de agentes que convierte la carta de un speakeasy de Salamanca
+        en carruseles de Instagram listos para publicar.</p>
+      <p class="small anim" style="margin-top:44px">Noviembre 2026</p>
+    </div>
+    <aside class="notes">0:00-0:20 · Arranque.
+«Esto es Clandestino 1920, un speakeasy de Salamanca inspirado en la Ley Seca. Mi proyecto no es una web ni una app: es un sistema que escribe y diseña el contenido del bar leyendo su propia carta. En cinco minutos os enseño cómo funciona y lo veis funcionar.»</aside>
+  </section>
+
+  <!-- 2 · PROBLEMA -->
+  <section class="slide">
+    <div style="position:absolute; left:76px; top:74px; width:1120px">
+      <div class="eyebrow anim">El punto de partida</div>
+      <h2 class="anim" style="margin-top:16px">Un bar pequeño, una carta enorme</h2>
+      <div class="rule anim"></div>
+    </div>
+
+    <div style="position:absolute; left:76px; top:252px; display:flex; gap:22px">
+      <div class="card anim" style="width:350px; height:168px">
+        <div class="kpi">130</div><div class="kpi-lbl">referencias en carta</div></div>
+      <div class="card anim" style="width:350px; height:168px">
+        <div class="kpi">23</div><div class="kpi-lbl">cócteles con historia</div></div>
+      <div class="card anim" style="width:350px; height:168px">
+        <div class="kpi">0</div><div class="kpi-lbl">personas para redes</div></div>
+    </div>
+
+    <p class="p anim" style="position:absolute; left:76px; top:470px; width:1000px; font-size:18.5px">
+      Publicar a diario exige foto, texto, hashtags y una voz que no cambie cada semana.
+      En un bar de dos personas eso no ocurre: se publica cuando hay un hueco, y la mayoría
+      de las noches no hay hueco.</p>
+    <aside class="notes">0:20-0:55 · El problema.
+«130 referencias en carta, 23 cócteles, y cero personas dedicadas a redes. La cuenta del bar vive de lo que se publica a las once de la noche con el móvil. Contenido irregular y una voz que cambia según quién lo escriba.»</aside>
+  </section>
+
+  <!-- 3 · IDEA -->
+  <section class="slide">
+    <div style="position:absolute; left:76px; top:74px; width:1120px">
+      <div class="eyebrow anim">La idea</div>
+      <h2 class="anim" style="margin-top:16px">No es pedirle un post a ChatGPT</h2>
+      <div class="rule anim"></div>
+    </div>
+
+    <div style="position:absolute; left:76px; top:224px; display:flex; gap:44px">
+      <div class="card anim" style="width:520px; height:290px">
+        <div class="eyebrow" style="color:var(--muted)">Un chatbot cualquiera</div>
+        <ul style="list-style:none; margin-top:24px; font-size:17.5px; line-height:2.05; color:var(--muted)">
+          <li>· No sabe qué hay en la carta</li>
+          <li>· Se inventa precios y cócteles</li>
+          <li>· Cambia de tono cada día</li>
+          <li>· Hay que corregirlo a mano</li>
+        </ul>
+      </div>
+      <div class="card gold anim" style="width:520px; height:290px">
+        <div class="eyebrow">Un sistema con memoria</div>
+        <ul style="list-style:none; margin-top:24px; font-size:17.5px; line-height:2.05; color:var(--cream)">
+          <li>· Lee la carta, la historia y los alérgenos</li>
+          <li>· Respeta la voz del speakeasy</li>
+          <li>· Cita de dónde sale cada dato</li>
+          <li>· Se puntúa y se corrige solo</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="quote anim" style="position:absolute; left:76px; top:560px; width:1080px; font-size:20px">
+      La diferencia no es la IA: es la información que le das y el control que le pones.</p>
+    <aside class="notes">0:55-1:30 · La idea.
+«Cualquiera puede pedirle un post a ChatGPT. Lo que no puede es que diga el precio correcto, no invente un cóctel y suene al bar. La diferencia no es la IA: es la información que le das y el control que le pones.»</aside>
+  </section>
+
+  <!-- 4 · CÓMO FUNCIONA -->
+  <section class="slide">
+    <div style="position:absolute; left:76px; top:74px; width:1120px">
+      <div class="eyebrow anim">Cómo funciona</div>
+      <h2 class="anim" style="margin-top:16px">Tres pasos y ya está</h2>
+      <div class="rule anim"></div>
+    </div>
+
+    <div style="position:absolute; left:76px; top:222px; display:flex; gap:22px">
+      <div class="card anim" style="width:350px; height:240px">
+        <div class="num">01</div>
+        <div class="step-title">Eliges el cóctel</div>
+        <div class="step-txt">En el panel, de la carta real del bar: 130 referencias.</div>
+      </div>
+      <div class="card anim" style="width:350px; height:240px">
+        <div class="num">02</div>
+        <div class="step-title">El sistema lo documenta</div>
+        <div class="step-txt">Busca en la carta y en la historia del local lo que encaja con ese cóctel.</div>
+      </div>
+      <div class="card anim" style="width:350px; height:240px">
+        <div class="num">03</div>
+        <div class="step-title">Recibes el carrusel</div>
+        <div class="step-txt">Cinco slides con texto, fotos y pie de foto listos para subir.</div>
+      </div>
+    </div>
+
+    <p class="quote anim" style="position:absolute; left:76px; top:500px; width:1080px; font-size:21px">
+      Un cóctel · cinco slides · un minuto.</p>
+    <p class="small anim" style="position:absolute; left:76px; top:566px; width:1080px">
+      Por debajo: base de datos vectorial (Qdrant) · modelo de lenguaje (Groq) · IA de imágenes (Google) · montaje local.</p>
+    <aside class="notes">1:30-2:10 · Cómo funciona.
+«Se usa en tres pasos. Uno: abro el panel y elijo el cóctel. Dos: el sistema lo documenta solo, buscando en la carta y en la historia del bar lo que encaja con ese cóctel. Tres: me devuelve un carrusel de cinco slides con su pie de foto. Un cóctel, cinco slides, un minuto.»
+Si preguntan la tecnología, la línea de abajo: base vectorial, modelo de lenguaje, IA de imágenes y montaje local.</aside>
+  </section>
+
+  <!-- 5 · REGLA DE ORO -->
+  <section class="slide">
+    <div style="position:absolute; left:76px; top:74px; width:1120px">
+      <div class="eyebrow anim">La regla de oro</div>
+      <h2 class="anim" style="margin-top:16px">Si no está en la carta, no se dice</h2>
+      <div class="rule anim"></div>
+    </div>
+
+    <div style="position:absolute; left:76px; top:236px; width:600px">
+      <div class="bullet anim">El precio sale del JSON de la carta, no del modelo</div>
+      <div class="bullet anim">Los ingredientes y los alérgenos, de la misma ficha</div>
+      <div class="bullet anim">Cada frase arrastra los identificadores de los documentos usados</div>
+      <div class="bullet anim">Si falta un dato, se omite: no se rellena el hueco</div>
+    </div>
+
+    <div class="card gold anim" style="position:absolute; left:790px; top:216px; width:414px; height:334px">
+      <div class="eyebrow" style="font-size:11px">Ficha real de la carta</div>
+      <div style="font-size:26px; font-weight:bold; margin-top:18px">Old Fashioned</div>
+      <div style="font-size:14px; color:var(--gold-soft); margin-top:8px">7,50 € · Cócteles</div>
+      <div style="font-size:14px; color:var(--muted); line-height:1.7; margin-top:22px">
+        Whisky, azúcar, angostura,<br>ralladura de naranja<br><br>Alérgenos: sulfitos</div>
+    </div>
+
+    <p class="quote anim" style="position:absolute; left:76px; top:596px; width:1080px">
+      Es lo que separa una demo bonita de algo que un bar se atrevería a publicar.</p>
+    <aside class="notes">2:10-2:40 · La fuente de verdad.
+«El modelo no opina sobre la carta, la consulta. Precio, ingredientes y alérgenos salen de la ficha, y cada frase lleva los identificadores de los documentos de los que sale.»</aside>
+  </section>
+
+  <!-- 6 · EL JUEZ -->
+  <section class="slide">
+    <div style="position:absolute; left:76px; top:74px; width:1120px">
+      <div class="eyebrow anim">El diferencial</div>
+      <h2 class="anim" style="margin-top:16px">Un agente que puede suspender</h2>
+      <div class="rule anim"></div>
+    </div>
+
+    <div style="position:absolute; left:76px; top:236px; width:740px">
+      <div class="bar-row anim"><div class="lbl">Voz de marca</div><div class="track"><div class="fill" style="--w:80%"></div></div><div class="val">8/10</div></div>
+      <div class="bar-row anim"><div class="lbl">Seguridad (alérgenos, precios)</div><div class="track"><div class="fill" style="--w:70%"></div></div><div class="val">7/10</div></div>
+      <div class="bar-row anim"><div class="lbl">Enganche</div><div class="track"><div class="fill" style="--w:80%"></div></div><div class="val">8/10</div></div>
+      <div class="bar-row anim"><div class="lbl">Objetivo (vender)</div><div class="track"><div class="fill" style="--w:70%"></div></div><div class="val">7/10</div></div>
+      <div class="bar-row anim"><div class="lbl">Uso de la carta</div><div class="track"><div class="fill" style="--w:80%"></div></div><div class="val">8/10</div></div>
+    </div>
+
+    <div class="card gold anim" style="position:absolute; left:880px; top:216px; width:324px; height:196px">
+      <div class="eyebrow" style="font-size:11px">Nota final</div>
+      <div style="font-size:56px; font-weight:bold; margin-top:6px">7,5</div>
+      <div style="font-size:12.5px; color:var(--gold-soft); letter-spacing:1.6px">APROBADO</div>
+    </div>
+
+    <p class="p anim" style="position:absolute; left:76px; top:520px; width:1080px; font-size:17.5px">
+      Si baja de 7, el feedback vuelve al agente creativo y se reescribe. Hasta tres intentos.<br>
+      Su último feedback pedía precio y alérgenos: exactamente lo que corregiría un community manager.</p>
+    <aside class="notes">2:40-3:10 · El juez.
+«Lo que hace que esto sea un sistema y no una tubería: un segundo agente puntúa cinco criterios y si baja de siete, se reescribe. Su último feedback pedía precio y alérgenos: lo mismo que corregiría una persona.»</aside>
+  </section>
+
+  <!-- 7 · EL VALOR -->
+  <section class="slide">
+    <div style="position:absolute; left:76px; top:74px; width:1120px">
+      <div class="eyebrow anim">El valor</div>
+      <h2 class="anim" style="margin-top:16px">Qué cambia en el día a día del bar</h2>
+      <div class="rule anim"></div>
+    </div>
+
+    <div style="position:absolute; left:76px; top:226px; display:flex; gap:22px">
+      <div class="card anim" style="width:350px; height:258px">
+        <div style="width:56px; height:3px; background:var(--gold)"></div>
+        <div class="step-title">De una tarde a un minuto</div>
+        <div class="step-txt">Antes: pensar, fotografiar, escribir, maquetar. Ahora: elegir un cóctel y revisar.</div>
+      </div>
+      <div class="card anim" style="width:350px; height:258px">
+        <div style="width:56px; height:3px; background:var(--gold)"></div>
+        <div class="step-title">Una sola voz</div>
+        <div class="step-txt">El mismo tono, la misma luz y la misma tipografía en todo lo que publica el local.</div>
+      </div>
+      <div class="card anim" style="width:350px; height:258px">
+        <div style="width:56px; height:3px; background:var(--gold)"></div>
+        <div class="step-title">Nada sale sin manos humanas</div>
+        <div class="step-txt">El sistema propone; el bar elige, corrige y publica. La última palabra es del negocio.</div>
+      </div>
+    </div>
+
+    <p class="quote anim" style="position:absolute; left:76px; top:540px; width:1080px; font-size:21px">
+      El community manager deja de escribir y empieza a elegir.</p>
+    <p class="small anim" style="position:absolute; left:76px; top:596px; width:1080px">
+      Lo que se publica sigue sonando al bar porque la materia prima —la carta, la historia, el tono— ya era del bar.</p>
+    <aside class="notes">3:10-3:35 · El valor.
+«¿Y qué cambia? Una: lo que antes era una tarde, ahora es un minuto. Dos: todo lo que se publica tiene la misma voz y la misma estética. Y tres: nada sale sin que el bar lo revise. El sistema propone, el negocio decide.»</aside>
+  </section>
+
+  <!-- 8 · RESULTADO -->
+  <section class="slide">
+    <div style="position:absolute; left:76px; top:62px; width:1120px">
+      <div class="eyebrow anim">El resultado</div>
+      <h2 class="anim" style="margin-top:14px">Cuatro slides, una historia</h2>
+    </div>
+
+    <div class="thumbs" style="position:absolute; left:76px; top:176px">
+      <figure class="anim"><img src="img/carrusel/slide_01.jpg" alt="Slide 1"></figure>
+      <figure class="anim"><img src="img/carrusel/slide_02.jpg" alt="Slide 2"></figure>
+      <figure class="anim"><img src="img/carrusel/slide_03.jpg" alt="Slide 3"></figure>
+      <figure class="anim"><img src="img/carrusel/slide_04.jpg" alt="Slide 4"></figure>
+    </div>
+
+    <p class="p anim" style="position:absolute; left:76px; top:530px; width:1080px; font-size:16px">
+      1080 × 1350 · marca, numeración y «desliza» en cada slide · pie de foto con hashtags incluidos.<br>
+      El texto lo escribe el agente; la foto, la IA de imágenes; el montaje es local.</p>
+    <aside class="notes">3:35-4:00 · Resultado.
+«Esto es lo que sale: cuatro slides con la misma luz, la misma tipografía y una historia que se sigue deslizando, más el pie de foto con sus hashtags.»</aside>
+  </section>
+
+  <!-- 9 · DEMO Y CIERRE -->
+  <section class="slide">
+    <div class="side"><img src="img/local/interior_03.jpg" alt="Entrada del local"></div>
+    <div style="position:absolute; left:76px; top:86px; width:680px">
+      <div class="eyebrow anim">Demo en vivo · cierre</div>
+      <h1 class="anim" style="margin-top:20px; font-size:58px">Y ahora,<br>lo hacemos</h1>
+      <div class="rule anim"></div>
+
+      <div style="display:flex; gap:16px; margin-top:10px">
+        <div class="anim" style="width:46px; height:46px; border-radius:50%; border:1px solid var(--gold);
+          display:grid; place-items:center; color:var(--gold); font-size:15px">1</div>
+        <div class="anim" style="font-size:18px; padding-top:11px">Elijo un cóctel de la carta</div>
+      </div>
+      <div style="display:flex; gap:16px; margin-top:14px">
+        <div class="anim" style="width:46px; height:46px; border-radius:50%; border:1px solid var(--gold);
+          display:grid; place-items:center; color:var(--gold); font-size:15px">2</div>
+        <div class="anim" style="font-size:18px; padding-top:11px">Pulso «generar carrusel»</div>
+      </div>
+      <div style="display:flex; gap:16px; margin-top:14px">
+        <div class="anim" style="width:46px; height:46px; border-radius:50%; border:1px solid var(--gold);
+          display:grid; place-items:center; color:var(--gold); font-size:15px">3</div>
+        <div class="anim" style="font-size:18px; padding-top:11px">En un minuto: slides y pie de foto</div>
+      </div>
+
+      <p class="quote anim" style="margin-top:52px; font-size:17px">«El contenido no se inventa: se destila.»</p>
+      <p class="anim" style="margin-top:14px; font-size:17px; font-weight:bold">Gracias · ¿preguntas?</p>
+    </div>
+    <aside class="notes">4:00-5:00 · CIERRE CON DEMO (aquí se acaba la presentación).
+Di la frase de cierre y salta al panel: «El contenido no se inventa, se destila. Y para que no sea solo una frase, lo hago delante de vosotros.»
+En el panel: elige el cóctel, pulsa generar y deja que se vea el progreso. Al terminar, muestra los slides y el pie de foto. Cierra con «esto es lo que publicaría el bar esta noche. Gracias, ¿preguntas?».
+Si algo falla: usa los carruseles ya generados (pestaña Demo) y di que los hiciste con el mismo botón.</aside>
+  </section>
+
+</div>
+</div>
+
+<div id="progress"></div>
+<div id="dots"></div>
+<div id="count">1 / 9</div>
+<div id="hint">← → para navegar · <kbd>N</kbd> notas · <kbd>F</kbd> pantalla completa</div>
+<div id="notes"></div>
+
+<script>
+(() => {
+  const stage = document.getElementById('stage');
+  const slides = [...document.querySelectorAll('.slide')];
+  const dotsBox = document.getElementById('dots');
+  const progress = document.getElementById('progress');
+  const count = document.getElementById('count');
+  const notes = document.getElementById('notes');
+  let i = 0;
+
+  // escala la "pantalla" 1280x720 al tamaño de la ventana
+  const fit = () => {
+    const s = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
+    stage.style.setProperty('--s', s);
+  };
+  window.addEventListener('resize', fit); fit();
+
+  // índice de animación por elemento (cascada automática, sin clics)
+  slides.forEach(sl => {
+    [...sl.querySelectorAll('.anim')].forEach((el, k) => {
+      if (!el.style.getPropertyValue('--i')) el.style.setProperty('--i', k);
+    });
+    dotsBox.insertAdjacentHTML('beforeend', '<div class="dot"></div>');
+  });
+  const dots = [...dotsBox.children];
+
+  function show(n) {
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach((sl, k) => sl.classList.toggle('on', k === i));
+    dots.forEach((d, k) => d.classList.toggle('on', k === i));
+    count.textContent = `${i + 1} / ${slides.length}`;
+    progress.style.width = `${((i + 1) / slides.length) * 100}%`;
+    const note = slides[i].querySelector('.notes');
+    notes.textContent = note ? note.textContent.trim() : '';
+    // reinicia el Ken Burns de la imagen lateral
+    const img = slides[i].querySelector('.side img');
+    if (img) { const c = img.cloneNode(true); img.replaceWith(c); }
+  }
+
+  const next = () => show(i + 1);
+  const prev = () => show(i - 1);
+
+  addEventListener('keydown', e => {
+    if (['ArrowRight', 'ArrowDown', ' ', 'PageDown', 'Enter'].includes(e.key)) { e.preventDefault(); next(); }
+    else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].includes(e.key)) { e.preventDefault(); prev(); }
+    else if (e.key === 'Home') show(0);
+    else if (e.key === 'End') show(slides.length - 1);
+    else if (e.key.toLowerCase() === 'n') notes.classList.toggle('on');
+    else if (e.key.toLowerCase() === 'f') {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+      else document.exitFullscreen();
+    }
+  });
+
+  // clic: mitad derecha avanza, izquierda retrocede
+  addEventListener('click', e => {
+    if (e.target.closest('#notes')) return;
+    if (e.clientX > window.innerWidth * 0.35) next(); else prev();
+  });
+
+  // rueda del ratón, con freno
+  let last = 0;
+  addEventListener('wheel', e => {
+    const now = Date.now();
+    if (now - last < 700) return;
+    last = now;
+    if (e.deltaY > 0) next(); else prev();
+  }, { passive: true });
+
+  // swipe en táctil
+  let x0 = null;
+  addEventListener('touchstart', e => x0 = e.touches[0].clientX, { passive: true });
+  addEventListener('touchend', e => {
+    if (x0 === null) return;
+    const dx = e.changedTouches[0].clientX - x0;
+    if (Math.abs(dx) > 60) dx < 0 ? next() : prev();
+    x0 = null;
+  });
+
+  show(0);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clandestino 1920 · Carruseles</title>
+<style>
+  :root{
+    --bg:#0e0c0a; --panel:#17130f; --panel2:#1f1a14; --line:#33291d;
+    --gold:#c69e60; --gold-soft:#e3c795; --txt:#f2ead9; --muted:#a2917a;
+    --danger:#c2554a; --ok:#6fae7a;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:radial-gradient(1200px 600px at 50% -10%, #241c13 0%, var(--bg) 55%);
+    color:var(--txt); font-family:Georgia,'Times New Roman',serif; min-height:100vh;
+  }
+  header{
+    display:flex; align-items:baseline; gap:18px; padding:26px 34px 18px;
+    border-bottom:1px solid var(--line);
+  }
+  header h1{
+    margin:0; font-size:26px; letter-spacing:.22em; font-weight:normal; color:var(--gold-soft);
+  }
+  header span{ color:var(--muted); font-size:14px; letter-spacing:.08em }
+  header .right{ margin-left:auto; color:var(--muted); font-size:13px }
+
+  .strip{display:flex; gap:10px; padding:16px 34px; overflow-x:auto; border-bottom:1px solid var(--line)}
+  .strip img{height:104px; border-radius:6px; object-fit:cover; filter:saturate(.9) contrast(1.02);
+             border:1px solid var(--line); flex:0 0 auto}
+
+  main{display:grid; grid-template-columns:1fr 420px; gap:26px; padding:22px 34px 60px; align-items:start}
+  @media (max-width:1000px){ main{grid-template-columns:1fr} }
+
+  .toolbar{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px}
+  .tab{
+    background:transparent; border:1px solid var(--line); color:var(--muted);
+    padding:7px 14px; border-radius:999px; cursor:pointer; font-family:inherit; font-size:13px;
+    letter-spacing:.06em;
+  }
+  .tab.active{border-color:var(--gold); color:var(--gold-soft); background:#20190f}
+  input[type=search]{
+    margin-left:auto; background:var(--panel); border:1px solid var(--line); color:var(--txt);
+    padding:8px 14px; border-radius:999px; font-family:inherit; min-width:200px; outline:none;
+  }
+  input[type=search]:focus{border-color:var(--gold)}
+
+  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:12px}
+  .card{
+    background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:14px 16px;
+    cursor:pointer; transition:.15s; position:relative;
+  }
+  .card:hover{border-color:#5a4526; background:var(--panel2); transform:translateY(-1px)}
+  .card.selected{border-color:var(--gold); background:#241c11; box-shadow:0 0 0 1px var(--gold) inset}
+  .card h3{margin:0 0 4px; font-size:16px; font-weight:normal; letter-spacing:.02em}
+  .card .sub{font-size:11.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.1em}
+  .card .price{position:absolute; top:13px; right:14px; color:var(--gold); font-size:14px}
+
+  aside{
+    background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:20px;
+    position:sticky; top:20px;
+  }
+  aside h2{margin:0 0 2px; font-size:19px; font-weight:normal; letter-spacing:.03em}
+  aside .meta{color:var(--muted); font-size:12.5px; margin-bottom:16px}
+  .field{margin-bottom:14px}
+  .field label{display:block; font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+               color:var(--muted); margin-bottom:6px}
+  select, .num{
+    width:100%; background:var(--panel2); color:var(--txt); border:1px solid var(--line);
+    border-radius:8px; padding:9px 12px; font-family:inherit; font-size:14px;
+  }
+  button.go{
+    width:100%; padding:13px; border-radius:8px; border:1px solid var(--gold);
+    background:linear-gradient(180deg,#d8b579,#b98f4c); color:#1a1208;
+    font-family:inherit; font-size:15px; letter-spacing:.10em; cursor:pointer;
+  }
+  button.go:disabled{opacity:.45; cursor:not-allowed}
+  .log{
+    margin-top:14px; font-family:ui-monospace,Consolas,monospace; font-size:11.5px;
+    color:var(--muted); max-height:130px; overflow-y:auto; line-height:1.7;
+    border-left:2px solid var(--line); padding-left:10px;
+  }
+  .log div:last-child{color:var(--gold-soft)}
+  .spinner{display:inline-block; width:11px;height:11px; border:2px solid var(--line);
+           border-top-color:var(--gold); border-radius:50%; animation:sp .8s linear infinite;
+           margin-right:7px; vertical-align:-1px}
+  @keyframes sp{to{transform:rotate(360deg)}}
+
+  .result{margin-top:16px; display:none}
+  .result.on{display:block}
+  .thumbs{display:grid; grid-template-columns:repeat(3,1fr); gap:6px; margin-bottom:12px}
+  .thumbs img{width:100%; border-radius:5px; border:1px solid var(--line); cursor:zoom-in}
+  .row{display:flex; gap:8px; margin-bottom:10px}
+  .row a{
+    flex:1; text-align:center; text-decoration:none; font-size:13px; padding:9px;
+    border:1px solid var(--line); border-radius:7px; color:var(--gold-soft);
+  }
+  .row a:hover{border-color:var(--gold)}
+  textarea{
+    width:100%; height:120px; background:var(--panel2); color:var(--txt); border:1px solid var(--line);
+    border-radius:8px; padding:10px; font-family:Georgia,serif; font-size:13px; resize:vertical;
+  }
+  .err{color:var(--danger); font-size:13px; font-family:ui-monospace,monospace; white-space:pre-wrap}
+  .hint{color:var(--muted); font-size:12.5px; font-style:italic; margin-top:10px}
+  .empty{color:var(--muted); font-size:14px; padding:30px 0}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>CLANDESTINO 1920</h1>
+  <span>· generador de carruseles</span>
+  <div class="right">{{ total }} referencias en carta</div>
+</header>
+
+{% if fotos %}
+<div class="strip">
+  {% for f in fotos %}<img src="/media/interior/{{ f }}" alt="Interior del local">{% endfor %}
+</div>
+{% endif %}
+
+<main>
+  <section>
+    <div class="toolbar">
+      {% for c in categorias %}
+        <button class="tab" data-cat="{{ c }}">{{ c }}</button>
+      {% endfor %}
+      <input type="search" id="buscar" placeholder="Buscar en la carta…">
+    </div>
+    <div class="grid" id="grid"></div>
+    <p class="empty" id="vacio" style="display:none">Nada con ese nombre.</p>
+  </section>
+
+  <aside>
+    <h2 id="sel-nombre">Elige un cóctel</h2>
+    <div class="meta" id="sel-meta">A la izquierda tienes la carta completa.</div>
+
+    <div class="field">
+      <label>Objetivo</label>
+      <select id="objetivo">
+        <option value="vender">Vender</option>
+        <option value="educar">Educar</option>
+        <option value="entretener">Entretener</option>
+        <option value="fidelizar">Fidelizar</option>
+        <option value="anunciar">Anunciar</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Número de slides</label>
+      <select id="slides">
+        <option>3</option><option>4</option><option selected>5</option>
+        <option>6</option><option>7</option><option>8</option>
+      </select>
+    </div>
+
+    <button class="go" id="btn" disabled>GENERAR CARRUSEL</button>
+
+    <div class="log" id="log"></div>
+
+    <div class="result" id="result">
+      <div class="thumbs" id="thumbs"></div>
+      <div class="row">
+        <a id="zip" href="#">Descargar ZIP</a>
+        <a id="folder" href="#" onclick="return false;">Carpeta</a>
+      </div>
+      <textarea id="caption" readonly></textarea>
+      <p class="hint">El pie de foto se copia solo al pulsarlo.</p>
+    </div>
+
+    <div class="err" id="err"></div>
+  </aside>
+</main>
+
+<script>
+const ITEMS = {{ items|tojson }};
+const grid = document.getElementById('grid');
+const vacio = document.getElementById('vacio');
+const btn = document.getElementById('btn');
+const logBox = document.getElementById('log');
+const result = document.getElementById('result');
+const errBox = document.getElementById('err');
+
+let catActiva = 'Cócteles';
+let seleccion = null;
+let polling = null;
+
+function pintar(){
+  const q = document.getElementById('buscar').value.trim().toLowerCase();
+  grid.innerHTML = '';
+  const lista = ITEMS.filter(i =>
+    (catActiva ? i.categoria === catActiva : true) &&
+    (!q || i.nombre.toLowerCase().includes(q))
+  );
+  vacio.style.display = lista.length ? 'none' : 'block';
+
+  lista.forEach(i => {
+    const d = document.createElement('div');
+    d.className = 'card' + (seleccion && seleccion.nombre === i.nombre ? ' selected' : '');
+    d.innerHTML = `<h3>${i.nombre}</h3>
+      <div class="sub">${i.subcategoria || i.categoria}</div>
+      ${i.precio ? `<div class="price">${i.precio.toFixed(2).replace('.',',')} €</div>` : ''}`;
+    d.onclick = () => elegir(i);
+    grid.appendChild(d);
+  });
+}
+
+function elegir(item){
+  seleccion = item;
+  document.getElementById('sel-nombre').textContent = item.nombre;
+  const al = (item.alergenos || []).join(', ');
+  document.getElementById('sel-meta').innerHTML =
+    `${item.precio ? item.precio.toFixed(2).replace('.',',')+' € · ' : ''}` +
+    `${item.ingredientes ? item.ingredientes.slice(0,4).join(', ') : ''}` +
+    `${al ? ' · alérgenos: '+al : ''}`;
+  btn.disabled = false;
+  result.classList.remove('on');
+  errBox.textContent = '';
+  logBox.innerHTML = '';
+  pintar();
+}
+
+document.querySelectorAll('.tab').forEach(t => {
+  t.onclick = () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    catActiva = t.dataset.cat;
+    pintar();
+  };
+});
+document.querySelector('.tab').classList.add('active');
+document.getElementById('buscar').oninput = pintar;
+pintar();
+
+btn.onclick = async () => {
+  if(!seleccion) return;
+  btn.disabled = true;
+  result.classList.remove('on');
+  errBox.textContent = '';
+  logBox.innerHTML = '<div><span class="spinner"></span>Arrancando…</div>';
+
+  const r = await fetch('/api/generar', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({
+      nombre: seleccion.nombre,
+      objetivo: document.getElementById('objetivo').value,
+      slides: parseInt(document.getElementById('slides').value)
+    })
+  });
+  const data = await r.json();
+  if(!r.ok){ errBox.textContent = data.error || 'Error'; btn.disabled=false; return; }
+  seguir(data.job);
+};
+
+function seguir(job){
+  clearInterval(polling);
+  polling = setInterval(async () => {
+    const r = await fetch('/api/job/' + job);
+    const d = await r.json();
+
+    logBox.innerHTML = d.log.map(l => `<div>${l}</div>`).join('');
+    logBox.scrollTop = logBox.scrollHeight;
+
+    if(d.status === 'ok'){
+      clearInterval(polling);
+      btn.disabled = false;
+      logBox.innerHTML += '<div>✅ Listo</div>';
+      const res = d.result;
+      document.getElementById('thumbs').innerHTML =
+        res.slides.map(s => `<img src="${s}" onclick="window.open('${s}','_blank')">`).join('');
+      document.getElementById('zip').href = res.zip;
+      document.getElementById('caption').value = res.caption;
+      document.getElementById('folder').textContent = 'Carpeta: ' + res.dir.split('\\').slice(-1);
+      document.getElementById('folder').onclick = () => {
+        navigator.clipboard.writeText(res.dir); alert('Ruta copiada:\\n' + res.dir);
+      };
+      result.classList.add('on');
+      result.scrollIntoView({behavior:'smooth', block:'nearest'});
+    }
+    if(d.status === 'error'){
+      clearInterval(polling);
+      btn.disabled = false;
+      errBox.textContent = '❌ ' + d.error + '\n\n' + (d.trace || '');
+    }
+  }, 1500);
+}
+
+document.getElementById('caption').onclick = function(){
+  this.select(); navigator.clipboard.writeText(this.value);
+  const t = this.value; this.value = '✓ Copiado'; 
+  setTimeout(()=>{ this.value = t; }, 900);
+};
+</script>
+</body>
+</html>

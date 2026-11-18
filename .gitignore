@@ -1,0 +1,17 @@
+# Entorno y secretos
+.env
+.venv/
+__pycache__/
+*.pyc
+
+# Generados (rutas ancladas a la raíz: web/img/carruseles SÍ se publica)
+/videos/
+/carruseles/
+/.build/
+/presentacion/preview/
+/presentacion/.img/
+/FINAL_*.json
+/output_*.json
+
+# Binario de ffmpeg (pesa 170 MB; cada uno se lo baja con el enlace de GUIA.md)
+/tools/ffmpeg.exe

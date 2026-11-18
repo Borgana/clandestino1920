@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clandestino 1920 · Carta y carruseles</title>
+<style>
+  :root{
+    --bg:#0E0C0A; --panel:#17130F; --panel2:#221B12; --line:#2E251A;
+    --gold:#C69E60; --gold-soft:#E3C795; --cream:#F2EAD9; --muted:#A2917A;
+  }
+  *{box-sizing:border-box; margin:0; padding:0}
+  body{background:radial-gradient(1200px 600px at 50% -12%, #241C13 0%, var(--bg) 58%);
+    color:var(--cream); font-family:Georgia,'Times New Roman',serif; min-height:100vh}
+
+  header{padding:26px 40px 20px; border-bottom:1px solid var(--line);
+    display:flex; align-items:baseline; gap:18px; flex-wrap:wrap}
+  header h1{font-size:24px; letter-spacing:.2em; font-weight:normal; color:var(--gold-soft)}
+  header .tag{font-size:12.5px; color:var(--muted); letter-spacing:.1em}
+  header .sp{flex:1}
+  header a.btn{font-size:12.5px; color:var(--gold-soft); text-decoration:none;
+    border:1px solid var(--line); padding:8px 14px; border-radius:999px}
+  header a.btn:hover{border-color:var(--gold)}
+
+  .banner{margin:0; padding:11px 40px; font-size:12.5px; color:var(--muted);
+    background:#140F0B; border-bottom:1px solid var(--line)}
+  .banner b{color:var(--gold-soft)}
+
+  main{padding:26px 40px 70px}
+
+  .toolbar{display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:18px}
+  .tab{background:transparent; border:1px solid var(--line); color:var(--muted);
+    padding:7px 14px; border-radius:999px; cursor:pointer; font-family:inherit; font-size:13px}
+  .tab.on{border-color:var(--gold); color:var(--gold-soft); background:#20190F}
+  input[type=search]{margin-left:auto; background:var(--panel); border:1px solid var(--line);
+    color:var(--cream); padding:9px 15px; border-radius:999px; font-family:inherit;
+    font-size:13px; min-width:230px; outline:none}
+  input[type=search]:focus{border-color:var(--gold)}
+
+  h2.sec{font-size:13px; letter-spacing:2.6px; color:var(--gold); font-weight:bold;
+    text-transform:uppercase; margin:34px 0 16px}
+  h2.sec:first-of-type{margin-top:0}
+
+  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(215px,1fr)); gap:12px}
+  .card{background:var(--panel); border:1px solid var(--line); border-radius:10px;
+    padding:14px 16px; position:relative}
+  .card h3{font-size:15.5px; font-weight:normal; margin-bottom:5px}
+  .card .sub{font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.09em}
+  .card .price{position:absolute; top:13px; right:14px; color:var(--gold); font-size:13.5px}
+
+  .gallery{display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:16px}
+  .car{border:1px solid var(--line); border-radius:12px; overflow:hidden; cursor:pointer;
+    background:var(--panel); transition:.18s}
+  .car:hover{border-color:var(--gold); transform:translateY(-3px)}
+  .car img{width:100%; aspect-ratio:4/5; object-fit:cover; display:block}
+  .car .meta{padding:11px 13px; font-size:13px}
+  .car .meta span{display:block; font-size:11px; color:var(--muted); margin-top:3px}
+
+  /* visor */
+  #viewer{position:fixed; inset:0; background:rgba(6,5,4,.96); display:none;
+    place-items:center; z-index:20; padding:40px}
+  #viewer.on{display:grid}
+  #viewer .frame{position:relative; max-height:86vh}
+  #viewer img{max-height:86vh; max-width:80vw; border-radius:10px;
+    box-shadow:0 30px 80px rgba(0,0,0,.6)}
+  #viewer .nav{position:absolute; top:50%; transform:translateY(-50%); width:52px; height:52px;
+    border-radius:50%; border:1px solid var(--line); background:rgba(20,16,12,.85);
+    color:var(--gold-soft); font-size:22px; cursor:pointer; display:grid; place-items:center}
+  #viewer .nav.prev{left:-72px} #viewer .nav.next{right:-72px}
+  #viewer .close{position:fixed; top:22px; right:26px; font-size:26px; color:var(--muted);
+    background:none; border:none; cursor:pointer}
+  #viewer .caption{position:fixed; left:50%; bottom:18px; transform:translateX(-50%);
+    max-width:70ch; font-size:12.5px; color:var(--muted); text-align:center; line-height:1.5}
+  #viewer .cnt{position:fixed; top:26px; left:26px; font-size:12.5px; color:var(--muted)}
+  .empty{color:var(--muted); font-size:14px; padding:24px 0}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>CLANDESTINO 1920</h1>
+  <span class="tag">· carta y carruseles</span>
+  <span class="sp"></span>
+  <a class="btn" href="index.html">← Presentación</a>
+  <a class="btn" href="http://127.0.0.1:5000/" target="_blank" rel="noopener">Abrir panel local (generar)</a>
+</header>
+
+<p class="banner">
+  <b>Galería de lo ya generado.</b> La generación en vivo corre en el panel de tu equipo:
+  <b>python app.py</b> → <b>127.0.0.1:5000</b>. Esta página es el respaldo si el portátil o la red fallan.
+</p>
+
+<main>
+  <h2 class="sec">Carruseles generados</h2>
+  <div class="gallery" id="gallery"></div>
+
+  <h2 class="sec">La carta</h2>
+  <div class="toolbar" id="tabs"></div>
+  <div class="grid" id="grid"></div>
+  <p class="empty" id="empty" style="display:none">Nada con ese nombre.</p>
+</main>
+
+<div id="viewer">
+  <button class="close" id="vclose">×</button>
+  <div class="cnt" id="vcnt"></div>
+  <div class="frame">
+    <button class="nav prev" id="vprev">‹</button>
+    <img id="vimg" alt="Slide del carrusel">
+    <button class="nav next" id="vnext">›</button>
+  </div>
+  <div class="caption" id="vcap"></div>
+</div>
+
+<script>
+const CATS = ['Cócteles', 'Destilados', 'Cervezas', 'Vinos', 'Otros'];
+let carta = [], carruseles = [], catActiva = 'Cócteles';
+
+/* ---------- carruseles ---------- */
+fetch('data/carruseles.json').then(r => r.json()).then(lista => {
+  carruseles = lista;
+  const g = document.getElementById('gallery');
+  g.innerHTML = lista.map((c, k) => `
+    <div class="car" data-k="${k}">
+      <img src="${c.slides[0]}" alt="${c.tema}">
+      <div class="meta">${c.tema}<span>${c.slides.length} slides</span></div>
+    </div>`).join('');
+  g.querySelectorAll('.car').forEach(el => {
+    el.addEventListener('click', () => abrir(+el.dataset.k));
+  });
+}).catch(() => {
+  document.getElementById('gallery').innerHTML =
+    '<p class="empty">No se pudo cargar la galería.</p>';
+});
+
+/* ---------- visor ---------- */
+let vIdx = 0, vSlide = 0;
+const viewer = document.getElementById('viewer');
+const vimg = document.getElementById('vimg');
+const vcnt = document.getElementById('vcnt');
+const vcap = document.getElementById('vcap');
+
+function pintar() {
+  const c = carruseles[vIdx];
+  vimg.src = c.slides[vSlide];
+  vcnt.textContent = `${c.tema} · ${vSlide + 1}/${c.slides.length}`;
+  vcap.textContent = c.caption ? c.caption.split('\n')[0] : '';
+}
+function abrir(k) { vIdx = k; vSlide = 0; viewer.classList.add('on'); pintar(); }
+function cerrar() { viewer.classList.remove('on'); }
+function mover(d) {
+  const c = carruseles[vIdx];
+  vSlide = (vSlide + d + c.slides.length) % c.slides.length;
+  pintar();
+}
+document.getElementById('vclose').onclick = cerrar;
+document.getElementById('vnext').onclick = e => { e.stopPropagation(); mover(1); };
+document.getElementById('vprev').onclick = e => { e.stopPropagation(); mover(-1); };
+viewer.addEventListener('click', e => { if (e.target === viewer) cerrar(); });
+addEventListener('keydown', e => {
+  if (!viewer.classList.contains('on')) return;
+  if (e.key === 'Escape') cerrar();
+  if (e.key === 'ArrowRight') mover(1);
+  if (e.key === 'ArrowLeft') mover(-1);
+});
+
+/* ---------- carta ---------- */
+fetch('data/carta.json').then(r => r.json()).then(items => {
+  carta = items;
+  const tabs = document.getElementById('tabs');
+  tabs.innerHTML = CATS.map(c =>
+    `<button class="tab${c === catActiva ? ' on' : ''}" data-cat="${c}">${c}</button>`).join('')
+    + `<input type="search" id="q" placeholder="Buscar en la carta…">`;
+  tabs.querySelectorAll('.tab').forEach(t => t.onclick = () => {
+    catActiva = t.dataset.cat;
+    tabs.querySelectorAll('.tab').forEach(x => x.classList.toggle('on', x === t));
+    pintarCarta();
+  });
+  document.getElementById('q').addEventListener('input', pintarCarta);
+  pintarCarta();
+});
+
+function pintarCarta() {
+  const q = (document.getElementById('q')?.value || '').trim().toLowerCase();
+  const lista = carta.filter(i => i.categoria === catActiva &&
+    (!q || i.nombre.toLowerCase().includes(q)));
+  const grid = document.getElementById('grid');
+  grid.innerHTML = lista.map(i => `
+    <div class="card">
+      <h3>${i.nombre}</h3>
+      <div class="sub">${i.subcategoria || i.categoria}</div>
+      ${i.precio ? `<div class="price">${i.precio.toFixed(2).replace('.', ',')} €</div>` : ''}
+    </div>`).join('');
+  document.getElementById('empty').style.display = lista.length ? 'none' : 'block';
+}
+</script>
+</body>
+</html>
