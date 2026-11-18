@@ -46,6 +46,36 @@ def interior_photos() -> list[Path]:
     return sorted(p for p in folder.iterdir() if p.suffix.lower() in (".jpg", ".jpeg", ".png"))
 
 
+def carruseles_disponibles() -> list[dict]:
+    """Carruseles ya generados en carruseles/, del más nuevo al más viejo."""
+    items = []
+    if not OUT_ROOT.exists():
+        return items
+
+    carpetas = sorted((p for p in OUT_ROOT.iterdir() if p.is_dir()),
+                      key=lambda p: p.stat().st_mtime, reverse=True)
+
+    for d in carpetas:
+        slides = sorted(d.glob("slide_*.jpg"))
+        if not slides:
+            continue
+        info = {}
+        if (d / "info.json").exists():
+            try:
+                info = json.loads((d / "info.json").read_text(encoding="utf-8"))
+            except Exception:  # noqa: BLE001
+                info = {}
+        caption = d / "caption.txt"
+        items.append({
+            "slug": d.name,
+            "tema": info.get("tema") or d.name.rsplit("_", 1)[0].replace("_", " "),
+            "fecha": d.name.rsplit("_", 1)[-1],
+            "slides": [f"/media/carrusel/{d.name}/{s.name}" for s in slides],
+            "caption": caption.read_text(encoding="utf-8").strip() if caption.exists() else "",
+        })
+    return items
+
+
 @app.route("/")
 def index():
     items = load_carta()
@@ -57,6 +87,11 @@ def index():
         fotos=fotos,
         total=len(items),
     )
+
+
+@app.route("/api/carruseles")
+def api_carruseles():
+    return jsonify(carruseles_disponibles())
 
 
 @app.route("/media/interior/<path:name>")

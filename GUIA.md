@@ -157,7 +157,9 @@ Se abre el navegador solo en `http://127.0.0.1:5000` (para parar: `Ctrl+C` en la
 
 En el panel tienes:
 
-- **Arriba**: las fotos del local (`assets/interior/`). Se generan solas la primera vez.
+- **Arriba**: la galería con todos los carruseles ya generados (clic en uno para verlo
+  a pantalla completa, flechas para pasar slides). El nuevo aparece ahí solo al terminar.
+- **Después**: las fotos del local (`assets/interior/`). Se generan solas la primera vez.
 - **Izquierda**: la carta completa (130 referencias), con pestañas por categoría y buscador.
 - **Derecha**: el cóctel elegido, el objetivo, el número de slides y el botón
   **GENERAR CARRUSEL**.

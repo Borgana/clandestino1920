@@ -46,6 +46,35 @@
   input[type=search]:focus{border-color:var(--gold)}
 
   .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:12px}
+
+  /* --- galería de carruseles ya generados --- */
+  .sec{font-size:11.5px; letter-spacing:2.6px; color:var(--gold); font-weight:bold;
+       text-transform:uppercase; margin:0 0 12px}
+  .gal{display:grid; grid-template-columns:repeat(auto-fill,minmax(118px,1fr)); gap:10px;
+       margin-bottom:28px}
+  .car{border:1px solid var(--line); border-radius:8px; overflow:hidden; cursor:pointer;
+       background:var(--panel); transition:.15s}
+  .car:hover{border-color:var(--gold); transform:translateY(-2px)}
+  .car img{width:100%; aspect-ratio:4/5; object-fit:cover; display:block}
+  .car .m{padding:7px 9px; font-size:11px; color:var(--txt)}
+  .car .m span{display:block; color:var(--muted); font-size:10px; margin-top:2px}
+  .vacio{color:var(--muted); font-size:13px; font-style:italic; margin-bottom:26px}
+
+  /* --- visor a pantalla completa --- */
+  #viewer{position:fixed; inset:0; background:rgba(6,5,4,.96); display:none;
+          place-items:center; z-index:30; padding:40px}
+  #viewer.on{display:grid}
+  #viewer img{max-height:84vh; max-width:78vw; border-radius:10px;
+              box-shadow:0 30px 80px rgba(0,0,0,.6)}
+  #viewer .vn{position:fixed; top:50%; transform:translateY(-50%); width:52px; height:52px;
+              border-radius:50%; border:1px solid var(--line); background:rgba(20,16,12,.85);
+              color:var(--gold-soft); font-size:22px; cursor:pointer; display:grid; place-items:center}
+  #viewer .vn.prev{left:24px} #viewer .vn.next{right:24px}
+  #vx{position:fixed; top:18px; right:24px; font-size:28px; color:var(--muted);
+      background:none; border:none; cursor:pointer}
+  #vc{position:fixed; top:24px; left:24px; font-size:12.5px; color:var(--muted)}
+  #vcap{position:fixed; left:50%; bottom:18px; transform:translateX(-50%); max-width:70ch;
+        font-size:12.5px; color:var(--muted); text-align:center; line-height:1.5}
   .card{
     background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:14px 16px;
     cursor:pointer; transition:.15s; position:relative;
@@ -121,6 +150,11 @@
 
 <main>
   <section>
+    <h2 class="sec">Carruseles generados</h2>
+    <div class="gal" id="gal"></div>
+    <p class="vacio" id="galVacio" style="display:none">Todavía no hay ninguno: genera el primero con el botón de la derecha.</p>
+
+    <h2 class="sec">Carta</h2>
     <div class="toolbar">
       {% for c in categorias %}
         <button class="tab" data-cat="{{ c }}">{{ c }}</button>
@@ -172,6 +206,15 @@
   </aside>
 </main>
 
+<div id="viewer">
+  <button id="vx">×</button>
+  <div id="vc"></div>
+  <button class="vn prev" id="vp">‹</button>
+  <img id="vi" alt="Slide del carrusel">
+  <button class="vn next" id="vn">›</button>
+  <div id="vcap"></div>
+</div>
+
 <script>
 const ITEMS = {{ items|tojson }};
 const grid = document.getElementById('grid');
@@ -184,6 +227,54 @@ const errBox = document.getElementById('err');
 let catActiva = 'Cócteles';
 let seleccion = null;
 let polling = null;
+
+/* ---------- galería de carruseles ya generados ---------- */
+let CARR = [], vIdx = 0, vSlide = 0;
+const viewer = document.getElementById('viewer');
+const vi = document.getElementById('vi');
+const vc = document.getElementById('vc');
+const vcap = document.getElementById('vcap');
+
+async function cargarGaleria(){
+  try{
+    const r = await fetch('/api/carruseles');
+    CARR = await r.json();
+  }catch(e){ CARR = []; }
+
+  const gal = document.getElementById('gal');
+  gal.innerHTML = CARR.map((c,k) => `
+    <div class="car" data-k="${k}">
+      <img src="${c.slides[0]}" alt="${c.tema}">
+      <div class="m">${c.tema}<span>${c.slides.length} slides</span></div>
+    </div>`).join('');
+  gal.querySelectorAll('.car').forEach(el =>
+    el.onclick = () => abrirVisor(+el.dataset.k));
+  document.getElementById('galVacio').style.display = CARR.length ? 'none' : 'block';
+}
+
+function pintarVisor(){
+  const c = CARR[vIdx];
+  vi.src = c.slides[vSlide];
+  vc.textContent = `${c.tema} · ${vSlide + 1}/${c.slides.length}`;
+  vcap.textContent = c.caption ? c.caption.split('\n')[0] : '';
+}
+function abrirVisor(k){ vIdx = k; vSlide = 0; viewer.classList.add('on'); pintarVisor(); }
+function cerrarVisor(){ viewer.classList.remove('on'); }
+function moverVisor(d){
+  const c = CARR[vIdx];
+  vSlide = (vSlide + d + c.slides.length) % c.slides.length;
+  pintarVisor();
+}
+document.getElementById('vx').onclick = cerrarVisor;
+document.getElementById('vn').onclick = e => { e.stopPropagation(); moverVisor(1); };
+document.getElementById('vp').onclick = e => { e.stopPropagation(); moverVisor(-1); };
+viewer.addEventListener('click', e => { if(e.target === viewer) cerrarVisor(); });
+document.addEventListener('keydown', e => {
+  if(!viewer.classList.contains('on')) return;
+  if(e.key === 'Escape') cerrarVisor();
+  if(e.key === 'ArrowRight') moverVisor(1);
+  if(e.key === 'ArrowLeft') moverVisor(-1);
+});
 
 function pintar(){
   const q = document.getElementById('buscar').value.trim().toLowerCase();
@@ -231,6 +322,7 @@ document.querySelectorAll('.tab').forEach(t => {
 document.querySelector('.tab').classList.add('active');
 document.getElementById('buscar').oninput = pintar;
 pintar();
+cargarGaleria();
 
 btn.onclick = async () => {
   if(!seleccion) return;
@@ -265,6 +357,7 @@ function seguir(job){
       clearInterval(polling);
       btn.disabled = false;
       logBox.innerHTML += '<div>✅ Listo</div>';
+      cargarGaleria();   // el carrusel nuevo aparece arriba sin recargar
       const res = d.result;
       document.getElementById('thumbs').innerHTML =
         res.slides.map(s => `<img src="${s}" onclick="window.open('${s}','_blank')">`).join('');
