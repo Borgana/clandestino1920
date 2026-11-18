@@ -279,6 +279,27 @@ pegándolos luego con ffmpeg.
 - Los MP4 se guardan en `videos/` y las imágenes temporales en `.build/` (se borra solo
   en cada ejecución). Puedes añadir ambas a `.gitignore`.
 
+### Si algo falla: diagnóstico
+
+```powershell
+.\.venv\Scripts\python.exe diagnostico.py
+```
+
+Comprueba DNS, Qdrant, Groq y Gemini en 10 segundos y dice cuál falla.
+
+### Sobrevivir a los cortes de red
+
+Tu conexión pierde el DNS a ratos (`getaddrinfo failed`). El código ya lo tolera:
+
+- **Qdrant**: 4 reintentos con espera creciente. Si no hay conexión, el carrusel sigue
+  adelante **solo con la ficha de la carta** (precio, ingredientes, alérgenos) en vez de
+  romperse. Verás el aviso en el panel: «Sigo sin contexto recuperado».
+- **Groq** (texto): 3 intentos con espera creciente antes de rendirse.
+- **Gemini** (imágenes): 4 intentos por slide.
+
+Los errores de red se muestran en el panel en castellano, no como un volcado de Python:
+«No hay conexión con la IA de imágenes (Google Gemini): el DNS no resuelve el dominio…».
+
 ---
 
 ## 9. Publicado: GitHub + Vercel

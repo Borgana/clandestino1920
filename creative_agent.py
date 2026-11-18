@@ -8,6 +8,7 @@ Uso: python creative_agent.py "Old Fashioned" reel vender
 import os
 import json
 import sys
+import time
 from pathlib import Path
 from dataclasses import dataclass
 from typing import Optional
@@ -150,33 +151,52 @@ def generate_creative(tema: str, formato: str, objetivo: str, feedback: str = ""
 
 
 
-def search_context(query: str, top_k: int = 5, filter_tipo: Optional[str] = None) -> list[dict]:
-    """Busca en Qdrant y devuelve lista de dicts con text, payload, score."""
+def search_context(query: str, top_k: int = 5, filter_tipo: Optional[str] = None,
+                   intentos: int = 4) -> list[dict]:
+    """
+    Busca en Qdrant y devuelve lista de dicts con text, payload, score.
+
+    Si la red falla (DNS caído, timeout), reintenta con espera creciente.
+    Si tras los intentos sigue sin haber conexión, devuelve [] y avisa:
+    el pipeline continúa con la ficha de la carta en vez de abortar.
+    """
     vec = embed_model.encode(query).tolist()
-    
+
     qfilter = None
     if filter_tipo:
         qfilter = Filter(must=[FieldCondition(key="tipo", match=MatchAny(any=[filter_tipo]))])
-    
-    res = qdrant.query_points(
-        collection_name=COLLECTION,
-        query=vec,
-        limit=top_k,
-        with_payload=True,
-        query_filter=qfilter
-    ).points
-    
-    return [
-        {
-            "id": r.id,
-            "score": r.score,
-            "text": r.payload["text"],
-            "source": r.payload.get("source"),
-            "tipo": r.payload.get("tipo"),
-            "nombre": r.payload.get("nombre"),
-        }
-        for r in res
-    ]
+
+    ultimo = None
+    for i in range(intentos):
+        try:
+            res = qdrant.query_points(
+                collection_name=COLLECTION,
+                query=vec,
+                limit=top_k,
+                with_payload=True,
+                query_filter=qfilter
+            ).points
+            return [
+                {
+                    "id": r.id,
+                    "score": r.score,
+                    "text": r.payload["text"],
+                    "source": r.payload.get("source"),
+                    "tipo": r.payload.get("tipo"),
+                    "nombre": r.payload.get("nombre"),
+                }
+                for r in res
+            ]
+        except Exception as e:  # noqa: BLE001  (red, DNS, timeout, 5xx)
+            ultimo = e
+            if i < intentos - 1:
+                espera = 2 * (i + 1)
+                print(f"  ⚠ Qdrant no responde ({type(e).__name__}), reintento en {espera}s...")
+                time.sleep(espera)
+
+    print(f"  ⚠ Sin conexión con Qdrant tras {intentos} intentos: {ultimo}")
+    print("    Sigo sin contexto recuperado (solo con la ficha de la carta).")
+    return []
 
 def build_context_str(results: list[dict]) -> str:
     """Convierte resultados en bloque de contexto para el prompt."""

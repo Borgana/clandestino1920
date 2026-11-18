@@ -86,6 +86,26 @@ def find_item(nombre: str) -> dict:
     raise SystemExit(f"No encuentro '{nombre}' en la carta. Revisa data/carta.json")
 
 
+def mensaje_red(error: Exception | str, servicio: str = "el servicio") -> str:
+    """
+    Traduce errores técnicos de red a algo que se entienda en el panel.
+    getaddrinfo / DNS / timeout / 429 son los cuatro casos que aparecen de verdad.
+    """
+    texto = str(error)
+    bajo = texto.lower()
+    if "getaddrinfo" in bajo or "name resolution" in bajo or "nameresolution" in bajo:
+        return (f"No hay conexión con {servicio}: el DNS no resuelve el dominio. "
+                f"Comprueba internet y vuelve a intentarlo (el error fue «getaddrinfo failed»).")
+    if "connection" in bajo or "timeout" in bajo or "timed out" in bajo:
+        return (f"Se ha cortado la conexión con {servicio}. Revisa la red y reinténtalo.")
+    if "429" in texto or "rate limit" in bajo or "quota" in bajo:
+        return (f"{servicio} ha alcanzado su límite de peticiones. "
+                f"Espera un minuto (o al día siguiente, si es la cuota diaria) y reinténtalo.")
+    if "insufficient_quota" in bajo or "credit" in bajo:
+        return f"{servicio} no tiene saldo o créditos disponibles."
+    return f"Error en {servicio}: {texto}"
+
+
 def _json_loose(txt: str) -> dict:
     """Parsea JSON aunque venga con ```json ... ``` o texto alrededor."""
     txt = (txt or "").strip()
@@ -105,9 +125,10 @@ def _llm_json(system: str, prompt: str, max_tokens: int = 2000) -> dict:
     intentos = [
         {"response_format": {"type": "json_object"}, "sufijo": ""},
         {"response_format": None, "sufijo": "\n\nDevuelve SOLO el JSON, sin explicaciones."},
+        {"response_format": {"type": "json_object"}, "sufijo": ""},
     ]
     ultimo = None
-    for cfg in intentos:
+    for n, cfg in enumerate(intentos):
         try:
             kwargs = dict(
                 model=LLM_MODEL,
@@ -124,8 +145,11 @@ def _llm_json(system: str, prompt: str, max_tokens: int = 2000) -> dict:
             return _json_loose(completion.choices[0].message.content)
         except Exception as e:  # noqa: BLE001
             ultimo = e
-            time.sleep(1.5)
-    raise RuntimeError(f"El LLM no devolvió un JSON usable: {ultimo}")
+            if n < len(intentos) - 1:
+                espera = 2 * (n + 1)
+                print(f"  ⚠ el modelo no respondió ({type(e).__name__}), reintento en {espera}s...")
+                time.sleep(espera)
+    raise RuntimeError(mensaje_red(ultimo, "el modelo de texto (Groq)"))
 
 
 def build_carousel(tema: str, objetivo: str = "vender", n_slides: int = 5) -> dict:
@@ -133,6 +157,9 @@ def build_carousel(tema: str, objetivo: str = "vender", n_slides: int = 5) -> di
     item = find_item(tema)
     ctx = search_context(f"{item['nombre']} {' '.join(item.get('ingredientes') or [])}", top_k=6)
     context_str = build_context_str(ctx)[:2500]
+    if not context_str:
+        context_str = ("(No hay contexto recuperado del local en este momento. "
+                       "Usa SOLO la ficha del cóctel que viene abajo.)")
 
     prompt = SLIDES_TEMPLATE.format(
         context=context_str,
@@ -303,12 +330,15 @@ def make_carousel(tema: str, objetivo: str = "vender", n_slides: int = 5,
     for i, slide in enumerate(data["slides"], start=1):
         log(f"Slide {i}/{total}: {slide.get('titulo','')}")
         raw = tmp_dir / f"raw_{i:02d}.png"
-        generate_image(slide.get("prompt_imagen", data["tema"]), raw, style=(
-            "Photograph taken inside a 1920s speakeasy cocktail bar: dark walnut, brass, "
-            "warm amber lamp light, bottles and glassware, film grain, shallow depth of field, "
-            "photorealistic, vertical composition, no text, no watermark. "
-            "The scene must happen at the bar or in the lounge, never on a ship, at sea or outdoors."
-        ))
+        try:
+            generate_image(slide.get("prompt_imagen", data["tema"]), raw, style=(
+                "Photograph taken inside a 1920s speakeasy cocktail bar: dark walnut, brass, "
+                "warm amber lamp light, bottles and glassware, film grain, shallow depth of field, "
+                "photorealistic, vertical composition, no text, no watermark. "
+                "The scene must happen at the bar or in the lounge, never on a ship, at sea or outdoors."
+            ))
+        except Exception as e:  # noqa: BLE001
+            raise RuntimeError(mensaje_red(e, "la IA de imágenes (Google Gemini)")) from e
         out = out_dir / f"slide_{i:02d}.jpg"
         render_slide(raw, slide.get("titulo", ""), slide.get("texto", ""), i, total, out)
         slides_files.append(out)

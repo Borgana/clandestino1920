@@ -24,7 +24,7 @@ from pathlib import Path
 from flask import Flask, jsonify, render_template, request, send_from_directory
 from PIL import Image
 
-from carousel_agent import ASSETS, CARTA_PATH, OUT_ROOT, _cover, make_carousel
+from carousel_agent import ASSETS, CARTA_PATH, OUT_ROOT, _cover, make_carousel, mensaje_red
 
 ROOT = Path(__file__).parent
 app = Flask(__name__, template_folder="templates")
@@ -132,11 +132,14 @@ def _run_job(job_id: str, nombre: str, objetivo: str, slides: int):
                 },
             })
     except Exception as e:  # noqa: BLE001
+        msg = str(e)
+        bajo = msg.lower()
+        es_red = any(k in bajo for k in ("getaddrinfo", "connection", "timeout", "429", "quota"))
         with LOCK:
             JOBS[job_id].update({
                 "status": "error",
-                "error": str(e),
-                "trace": traceback.format_exc()[-1200:],
+                "error": mensaje_red(e, "el sistema") if es_red else msg,
+                "trace": "" if es_red else traceback.format_exc()[-1200:],
             })
 
 
