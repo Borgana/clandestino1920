@@ -197,7 +197,8 @@
   #stage{position:fixed; inset:0; z-index:50; display:none; place-items:center;
     background:radial-gradient(900px 600px at 50% 40%, #1C150E 0%, #080706 70%);
     backdrop-filter:blur(10px)}
-  #stage.on{display:grid; animation:aparece .3s ease both}
+  #stage.on{display:flex; align-items:safe center; justify-content:center; overflow:auto;
+    padding:20px 0; animation:aparece .3s ease both}
   #stage .bg{position:absolute; inset:-20%; opacity:.5; pointer-events:none;
     background:conic-gradient(from 0deg, transparent 0deg, rgba(198,158,96,.10) 80deg,
       transparent 160deg, rgba(198,158,96,.06) 260deg, transparent 340deg);
@@ -213,7 +214,7 @@
     border:1px solid var(--line); padding:6px 12px; border-radius:999px}
   .stagebox .sub{font-size:12px; color:var(--muted); letter-spacing:.08em; margin-bottom:26px}
 
-  .agents{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; position:relative}
+  .agents{display:grid; grid-template-columns:repeat(5,1fr); gap:12px; position:relative}
   .agent{position:relative; border:1px solid var(--line); border-radius:14px; padding:18px 16px;
     background:linear-gradient(180deg,#171210,#100D0B); text-align:center;
     transition:transform .45s cubic-bezier(.2,.8,.3,1), border-color .45s, box-shadow .45s,
@@ -236,11 +237,94 @@
   .agent.done .ico{border-color:#3E5A43; color:var(--ok)}
   .agent.done .st{color:var(--ok)}
 
-  .rail{position:relative; height:2px; margin:26px 4px 22px; background:var(--line);
-    border-radius:2px; overflow:hidden}
-  .rail .fill{position:absolute; inset:0 auto 0 0; width:0;
+  /* haz de progreso con chispas */
+  .beam{position:relative; height:6px; margin:32px 8px 10px; border-radius:4px;
+    background:linear-gradient(90deg,#221B15,#2C2318)}
+  .beam-fill{position:relative; height:100%; width:0; border-radius:4px;
+    background:linear-gradient(90deg, rgba(198,158,96,.30), var(--gold-soft));
+    box-shadow:0 0 24px rgba(198,158,96,.55);
+    transition:width 1.1s cubic-bezier(.2,.8,.3,1)}
+  .beam-head{position:absolute; right:-8px; top:50%; width:15px; height:15px; margin-top:-7.5px;
+    border-radius:50%; background:#FFF4DE;
+    box-shadow:0 0 20px 7px rgba(198,158,96,.75);
+    animation:latido2 1.15s ease-in-out infinite}
+  @keyframes latido2{0%,100%{transform:scale(1); opacity:.9} 50%{transform:scale(1.4); opacity:1}}
+  .beam .spark{position:absolute; top:50%; width:4px; height:4px; border-radius:50%;
+    background:var(--gold-soft); opacity:0; pointer-events:none}
+  .beam.run .spark{animation:chispa 1.7s linear infinite}
+  @keyframes chispa{
+    0%{opacity:0; transform:translateY(0) scale(.5)}
+    20%{opacity:1}
+    100%{opacity:0; transform:translateY(-30px) scale(1.5)}}
+
+  /* animaciones propias de cada agente */
+  .agent .ico{position:relative}
+  .agent.active .ico::before{content:''; position:absolute; inset:-6px; border-radius:50%;
+    border:2px solid transparent; border-top-color:var(--gold); border-right-color:rgba(198,158,96,.4);
+    animation:gira 1.1s linear infinite}
+  .agent[data-stage="writing"].active .ico::after{content:''; position:absolute; right:6px; bottom:4px;
+    width:3px; height:12px; background:var(--gold-soft); animation:caret .8s steps(1) infinite}
+  @keyframes caret{0%,49%{opacity:1} 50%,100%{opacity:0}}
+  .agent[data-stage="images"].active .ico{animation:pulsoFoto 1.4s ease-in-out infinite}
+  @keyframes pulsoFoto{0%,100%{box-shadow:0 0 12px rgba(198,158,96,.3)}
+    50%{box-shadow:0 0 30px rgba(198,158,96,.85)}}
+  .agent[data-stage="layout"].active .ico{animation:apila 1.6s ease-in-out infinite}
+  @keyframes apila{0%,100%{transform:translateY(0)} 50%{transform:translateY(-3px)}}
+  .agent[data-stage="review"].active .ico{animation:gira 2.4s linear infinite}
+
+  /* tira de fotos que van saliendo */
+  .film{display:flex; gap:9px; align-items:center; margin-top:16px; min-height:84px}
+  .film .lb{font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--muted);
+    width:74px; flex:0 0 auto}
+  .film .ph{position:relative; width:62px; height:78px; border-radius:6px; overflow:hidden;
+    border:1px dashed #3A2F22; background:#120F0C; opacity:.5; flex:0 0 auto;
+    transition:opacity .35s, border-color .35s, box-shadow .35s}
+  .film .ph img{width:100%; height:100%; object-fit:cover; opacity:0; transform:scale(1.2);
+    transition:opacity .55s ease, transform .8s cubic-bezier(.2,.8,.3,1)}
+  .film .ph.on{opacity:1; border-style:solid; border-color:var(--gold);
+    box-shadow:0 0 20px rgba(198,158,96,.4)}
+  .film .ph.on img{opacity:1; transform:none}
+  .film .ph::after{content:''; position:absolute; inset:0; background:#FFF4DE; opacity:0}
+  .film .ph.flash::after{animation:flash .55s ease-out}
+  @keyframes flash{0%{opacity:.9} 100%{opacity:0}}
+
+  /* informe del profesor */
+  .prof{display:none; margin-top:20px; border:1px solid var(--line); border-radius:14px;
+    padding:18px 20px; background:linear-gradient(180deg,#171210,#100D0B)}
+  .prof.on{display:block; animation:sube .55s cubic-bezier(.2,.8,.3,1) both}
+  .prof .top{display:flex; align-items:center; gap:18px}
+  .prof .nota{font-size:40px; line-height:1; color:var(--gold-soft); font-weight:bold}
+  .prof .nota em{font-size:13px; font-style:normal; color:var(--muted)}
+  .prof .who{font-size:10.5px; letter-spacing:.24em; text-transform:uppercase; color:var(--gold)}
+  .prof .lbl{font-size:11px; color:var(--muted); margin-top:2px}
+  .crit{display:grid; grid-template-columns:1fr 1fr; gap:8px 20px; margin-top:16px}
+  .crit .c{display:flex; align-items:center; gap:10px; font-size:11px; color:var(--muted)}
+  .crit .c span:first-child{width:96px; flex:0 0 auto}
+  .crit .t{flex:1; height:4px; background:#241D16; border-radius:3px; overflow:hidden}
+  .crit .t i{display:block; height:100%; width:0; border-radius:3px;
     background:linear-gradient(90deg,var(--gold),var(--gold-soft));
-    box-shadow:0 0 18px rgba(198,158,96,.8); transition:width .8s cubic-bezier(.2,.8,.3,1)}
+    transition:width .9s cubic-bezier(.2,.8,.3,1)}
+  .prof .com{margin-top:15px; font-size:12.5px; line-height:1.65; color:var(--cream);
+    font-style:italic; border-left:2px solid var(--gold); padding-left:12px}
+
+  /* historial plegado */
+  .histbtn{display:flex; align-items:center; gap:10px; width:100%; background:none; border:none;
+    color:var(--muted); font-family:inherit; font-size:11.5px; letter-spacing:.24em;
+    text-transform:uppercase; cursor:pointer; padding:2px 0 14px; transition:color .2s}
+  .histbtn:hover{color:var(--gold-soft)}
+  .histbtn .chev{color:var(--gold); transition:transform .25s; display:inline-block}
+  .histbtn.open .chev{transform:rotate(90deg)}
+  .histbtn .n{font-size:10.5px; letter-spacing:.1em; color:var(--gold-soft);
+    border:1px solid var(--line); border-radius:999px; padding:2px 8px}
+  .hist{max-height:0; opacity:0; overflow:hidden;
+    transition:max-height .5s cubic-bezier(.2,.8,.3,1), opacity .35s ease}
+  .hist.open{max-height:1400px; opacity:1}
+
+  /* confeti final */
+  #confetti{position:absolute; inset:0; overflow:hidden; pointer-events:none; z-index:3}
+  #confetti i{position:absolute; top:-14px; width:7px; height:11px; border-radius:1px;
+    opacity:.9; animation:caer linear forwards}
+  @keyframes caer{to{transform:translateY(110vh) rotate(760deg); opacity:0}}
 
   .console{font-family:ui-monospace,Consolas,monospace; font-size:11.5px; line-height:1.9;
     color:var(--muted); min-height:74px; border-left:2px solid var(--line); padding-left:14px}
@@ -283,14 +367,16 @@
 
 <main>
   <section>
-    <div class="sec">
-      <h2>Carruseles generados</h2>
-      <span class="count" id="galCount"></span>
-      <span class="rule"></span>
+    <button class="histbtn" id="histBtn" aria-expanded="false">
+      <span class="chev">▸</span>
+      Ver historial de carruseles
+      <span class="n" id="galCount">0</span>
+    </button>
+    <div class="hist" id="hist">
+      <div class="gal" id="gal"></div>
+      <p class="vacio" id="galVacio" style="display:none">
+        Todavía no hay ninguno. Elige un cóctel a la derecha y pulsa generar.</p>
     </div>
-    <div class="gal" id="gal"></div>
-    <p class="vacio" id="galVacio" style="display:none">
-      Todavía no hay ninguno. Elige un cóctel a la derecha y pulsa generar.</p>
 
     <div class="sec">
       <h2>La carta</h2>
@@ -364,6 +450,7 @@
 <!-- escenario de los agentes -->
 <div id="stage">
   <div class="bg"></div>
+  <div id="confetti"></div>
   <div class="stagebox">
     <div class="top">
       <h2>Generando el carrusel de <b id="st-tema">…</b></h2>
@@ -375,32 +462,57 @@
       <div class="agent" data-stage="research">
         <div class="ico">⌕</div>
         <div class="nm">Investigador</div>
-        <div class="ds">carta, historia y alérgenos</div>
+        <div class="ds">carta, historia<br>y alérgenos</div>
         <div class="st">en espera</div>
       </div>
       <div class="agent" data-stage="writing">
         <div class="ico">✎</div>
         <div class="nm">Redactor</div>
-        <div class="ds">títulos, textos y pie de foto</div>
+        <div class="ds">títulos, textos<br>y pie de foto</div>
         <div class="st">en espera</div>
       </div>
       <div class="agent" data-stage="images">
         <div class="ico">◉</div>
         <div class="nm">Ilustrador</div>
-        <div class="ds">una foto por slide</div>
+        <div class="ds">una foto<br>por slide</div>
         <div class="st">en espera</div>
       </div>
       <div class="agent" data-stage="layout">
         <div class="ico">▤</div>
         <div class="nm">Montador</div>
-        <div class="ds">tipografía, marca y ZIP</div>
+        <div class="ds">tipografía, marca<br>y ZIP</div>
+        <div class="st">en espera</div>
+      </div>
+      <div class="agent" data-stage="review">
+        <div class="ico">★</div>
+        <div class="nm">Profesor</div>
+        <div class="ds">corrige<br>y pone nota</div>
         <div class="st">en espera</div>
       </div>
     </div>
 
-    <div class="rail"><div class="fill" id="st-fill"></div></div>
+    <div class="beam" id="st-beam">
+      <div class="beam-fill" id="st-fill"><span class="beam-head"></span></div>
+      <i class="spark" style="left:18%"></i>
+      <i class="spark" style="left:41%; animation-delay:.5s"></i>
+      <i class="spark" style="left:64%; animation-delay:1s"></i>
+      <i class="spark" style="left:85%; animation-delay:1.4s"></i>
+    </div>
+
+    <div class="film" id="st-film"><span class="lb">Fotos</span></div>
     <div class="console" id="st-console"></div>
-    <div class="dots"><span class="lb">Slides</span><span id="st-dots"></span></div>
+
+    <div class="prof" id="st-prof">
+      <div class="top">
+        <div class="nota" id="prof-nota">—<em>/10</em></div>
+        <div>
+          <div class="who">Informe del profesor</div>
+          <div class="lbl" id="prof-lbl">Corrección automática</div>
+        </div>
+      </div>
+      <div class="crit" id="prof-crit"></div>
+      <div class="com" id="prof-com"></div>
+    </div>
 
     <div class="finish" id="st-finish">
       <div class="ok">✓ Carrusel listo</div>
@@ -414,13 +526,13 @@
 
 <script>
 const ITEMS = {{ items|tojson }};
-const ORDEN = ['research','writing','images','layout','export'];
+
 
 /* ───────── estado ───────── */
 let catActiva = 'Cócteles';
 let seleccion = null;
 let polling = null;
-let CARR = [], vIdx = 0, vSlide = 0;
+let CARR = [], vSlide = 0;
 let OBJ = 'vender', NUM = 5;
 
 const $ = id => document.getElementById(id);
@@ -498,22 +610,26 @@ async function cargarGaleria() {
     </div>`).join('');
   $('gal').querySelectorAll('.car').forEach(el =>
     el.onclick = () => abrirVisor(+el.dataset.k));
-  $('galCount').textContent = CARR.length ? `${CARR.length} carruseles` : '';
+  $('galCount').textContent = CARR.length;
   $('galVacio').style.display = CARR.length ? 'none' : 'block';
 }
 
-/* visor */
+/* visor (sirve tanto para el historial como para el carrusel recién creado) */
+let VIS = null;
 function pintarVisor() {
-  const c = CARR[vIdx];
-  $('vi').src = c.slides[vSlide];
-  $('vc').textContent = `${c.tema} · ${vSlide + 1}/${c.slides.length}`;
-  $('vcap').textContent = c.caption ? c.caption.split('\n')[0] : '';
+  if (!VIS) return;
+  $('vi').src = VIS.slides[vSlide];
+  $('vc').textContent = `${VIS.tema} · ${vSlide + 1}/${VIS.slides.length}`;
+  $('vcap').textContent = VIS.caption ? VIS.caption.split('\n')[0] : '';
 }
-function abrirVisor(k) { vIdx = k; vSlide = 0; $('viewer').classList.add('on'); pintarVisor(); }
+function abrirCarrusel(obj) {
+  VIS = obj; vSlide = 0; $('viewer').classList.add('on'); pintarVisor();
+}
+function abrirVisor(k) { abrirCarrusel(CARR[k]); }
 function cerrarVisor() { $('viewer').classList.remove('on'); }
 function moverVisor(d) {
-  const c = CARR[vIdx];
-  vSlide = (vSlide + d + c.slides.length) % c.slides.length;
+  if (!VIS) return;
+  vSlide = (vSlide + d + VIS.slides.length) % VIS.slides.length;
   pintarVisor();
 }
 $('vx').onclick = cerrarVisor;
@@ -529,26 +645,35 @@ addEventListener('keydown', e => {
 
 /* ───────── escenario de agentes ───────── */
 const stage = $('stage');
-let t0 = 0, timerInt = null, stageIdx = -1;
+let t0 = 0, timerInt = null;
+
+const ETAPAS = ['research', 'writing', 'images', 'layout', 'export', 'review'];
+const AGENTES = ['research', 'writing', 'images', 'layout', 'review'];
 
 function agenteDe(s) {
-  return { research: 'research', writing: 'writing', images: 'images',
-           layout: 'layout', export: 'layout', done: 'layout' }[s];
+  return { research: 'research', writing: 'writing', images: 'images', layout: 'layout',
+           export: 'layout', review: 'review', done: 'review' }[s];
 }
 
 function entrarEscenario(nombre) {
-  stageIdx = -1;
   $('st-tema').textContent = nombre;
   $('st-sub').textContent = NUM + ' slides · objetivo: ' + OBJ;
   $('st-console').innerHTML = '';
-  $('st-fill').style.width = '4%';
+  $('st-fill').style.width = '3%';
+  $('st-beam').classList.add('run');
   $('st-finish').classList.remove('on');
-  $('st-dots').innerHTML = Array.from({ length: NUM },
-    () => '<i></i>').join('');
+  $('st-prof').classList.remove('on');
+  $('confetti').innerHTML = '';
+
+  // una casilla por slide: se van rellenando con las fotos reales
+  $('st-film').innerHTML = '<span class="lb">Fotos</span>' +
+    Array.from({ length: NUM }, (_, i) => `<div class="ph" data-i="${i + 1}"></div>`).join('');
+
   document.querySelectorAll('#stage .agent').forEach(a => {
     a.classList.remove('active', 'done');
     a.querySelector('.st').textContent = 'en espera';
   });
+
   stage.classList.add('on');
   t0 = Date.now();
   clearInterval(timerInt);
@@ -559,45 +684,60 @@ function entrarEscenario(nombre) {
 
 function cerrarEscenario() {
   stage.classList.remove('on');
+  $('st-beam').classList.remove('run');
   clearInterval(timerInt);
 }
 
+/* pinta la foto n en su casilla (primero el bruto, luego el slide montado) */
+function marcarFoto(n, dir, final) {
+  const cell = document.querySelector(`#st-film .ph[data-i="${n}"]`);
+  if (!cell || !dir) return;
+  const num = String(n).padStart(2, '0');
+  const src = final
+    ? `/media/carrusel/${dir}/slide_${num}.jpg`
+    : `/media/carrusel/${dir}/.raw/raw_${num}.png`;
+  let img = cell.querySelector('img');
+  if (!img) { img = document.createElement('img'); cell.appendChild(img); }
+  if (img.getAttribute('src') === src) return;
+  img.onload = () => {
+    cell.classList.add('on');
+    cell.classList.remove('flash');
+    void cell.offsetWidth;   // reinicia la animación
+    cell.classList.add('flash');
+  };
+  img.src = src;
+}
+
 function aplicarEventos(events) {
-  const cons = $('st-console');
-  cons.innerHTML = events.slice(-4).map(e => `<div>${e.msg}</div>`).join('');
   if (!events.length) return;
+  $('st-console').innerHTML = events.slice(-4).map(e => `<div>${e.msg}</div>`).join('');
 
-  const ultimo = events[events.length - 1];
-  const stageReal = ultimo.stage;
+  const u = events[events.length - 1];
+  const st = u.stage;
 
-  // progreso de la barra
-  const idx = ORDEN.indexOf(stageReal === 'done' ? 'export' : stageReal);
-  if (idx >= 0) $('st-fill').style.width = ((idx + 1) / ORDEN.length) * 100 + '%';
+  const idx = ETAPAS.indexOf(st === 'done' ? 'review' : st);
+  if (idx >= 0) $('st-fill').style.width = ((idx + 1) / ETAPAS.length) * 100 + '%';
 
-  // marcar agentes
-  const actual = agenteDe(stageReal);
-  const ordenAgentes = ['research', 'writing', 'images', 'layout'];
-  const posActual = ordenAgentes.indexOf(actual);
+  const actual = agenteDe(st);
+  const posActual = AGENTES.indexOf(actual);
 
   document.querySelectorAll('#stage .agent').forEach(a => {
-    const pos = ordenAgentes.indexOf(a.dataset.stage);
-    a.classList.toggle('done', pos < posActual || stageReal === 'done');
-    const activo = pos === posActual && stageReal !== 'done';
+    const pos = AGENTES.indexOf(a.dataset.stage);
+    const listo = st === 'done' || pos < posActual;
+    const activo = pos === posActual && st !== 'done';
+    a.classList.toggle('done', listo);
     a.classList.toggle('active', activo);
-    const st = a.querySelector('.st');
-    if (pos < posActual || stageReal === 'done') st.textContent = 'listo';
-    else if (activo) {
-      if (stageReal === 'images' && ultimo.slide) st.textContent = `foto ${ultimo.slide} de ${ultimo.total || NUM}`;
-      else if (stageReal === 'layout' && ultimo.slide) st.textContent = `slide ${ultimo.slide} de ${ultimo.total || NUM}`;
-      else st.textContent = 'trabajando';
-    } else st.textContent = 'en espera';
+
+    const et = a.querySelector('.st');
+    if (listo) et.textContent = 'listo';
+    else if (!activo) et.textContent = 'en espera';
+    else if (st === 'images' && u.slide) et.textContent = `foto ${u.slide} de ${u.total || NUM}`;
+    else if (st === 'layout' && u.slide) et.textContent = `slide ${u.slide} de ${u.total || NUM}`;
+    else if (st === 'review' && u.nota) et.textContent = `${u.nota}/10`;
+    else et.textContent = 'trabajando';
   });
 
-  // puntitos de slides
-  if ((stageReal === 'images' || stageReal === 'layout') && ultimo.slide) {
-    const dots = $('st-dots').children;
-    for (let i = 0; i < dots.length; i++) dots[i].classList.toggle('on', i < ultimo.slide);
-  }
+  if ((st === 'images' || st === 'layout') && u.slide) marcarFoto(u.slide, u.dir, st === 'layout');
 }
 
 /* ───────── generar ───────── */
@@ -643,15 +783,27 @@ function seguir(job) {
       btn.disabled = false;
       clearInterval(timerInt);
       $('st-fill').style.width = '100%';
+      $('st-beam').classList.remove('run');
       document.querySelectorAll('#stage .agent').forEach(a => {
         a.classList.remove('active'); a.classList.add('done');
         a.querySelector('.st').textContent = 'listo';
       });
+
       const res = d.result;
+      const nuevo = { tema: res.tema, slides: res.slides, caption: res.caption };
+
+      pintarProfesor(res.evaluacion);
+      confeti();
+
+      // "Ver carrusel" abre las fotos recién creadas, no vuelve a la portada
       $('st-open').onclick = () => {
         cerrarEscenario();
-        $('thumbs').innerHTML = res.slides.map(s =>
-          `<img src="${s}" onclick="abrirSlide('${s}')">`).join('');
+        abrirCarrusel(nuevo);
+        $('thumbs').innerHTML = res.slides.map((s, i) =>
+          `<img src="${s}" data-i="${i}">`).join('');
+        $('thumbs').querySelectorAll('img').forEach(im =>
+          im.onclick = () => { vSlide = +im.dataset.i; pintarVisor();
+                               $('viewer').classList.add('on'); });
         $('zip').href = res.zip;
         $('caption').value = res.caption;
         $('folder').onclick = () => {
@@ -662,10 +814,9 @@ function seguir(job) {
         result.classList.add('on');
         cargarGaleria();
       };
+
+      $('st-close').onclick = () => { cerrarEscenario(); cargarGaleria(); };
       $('st-finish').classList.add('on');
-      $('st-close').onclick = () => {
-        cerrarEscenario(); cargarGaleria();
-      };
       // no se cierra solo: lo cierras tú para poder comentarlo
     }
 
@@ -679,17 +830,48 @@ function seguir(job) {
   }, 900);
 }
 
-function abrirSlide(url) {
-  const idx = CARR.findIndex(c => c.slides.includes(url));
-  if (idx >= 0) {
-    vIdx = idx;
-    vSlide = CARR[idx].slides.indexOf(url);
-    $('viewer').classList.add('on');
-    pintarVisor();
-    return;
-  }
-  window.open(url, '_blank');
+/* informe del profesor */
+function pintarProfesor(ev) {
+  if (!ev) return;
+  $('prof-nota').innerHTML = `${String(ev.nota ?? '—').replace('.', ',')}<em>/10</em>`;
+  const nombres = {
+    voz_de_marca: 'Voz de marca', claridad: 'Claridad', gancho: 'Gancho',
+    precio_y_alergenos: 'Precio y alérgenos', llamada_a_la_accion: 'Llamada a la acción'
+  };
+  const crit = ev.criterios || {};
+  $('prof-crit').innerHTML = Object.entries(nombres).map(([k, lbl]) => {
+    const v = Math.max(0, Math.min(10, Number(crit[k] ?? 0)));
+    return `<div class="c"><span>${lbl}</span><span class="t"><i data-w="${v * 10}"></i></span></div>`;
+  }).join('');
+  $('prof-com').textContent = ev.comentario || '';
+  $('prof-lbl').textContent = 'Corrección automática · marketing digital';
+  $('st-prof').classList.add('on');
+  requestAnimationFrame(() => {
+    $('prof-crit').querySelectorAll('.t i').forEach(i => i.style.width = i.dataset.w + '%');
+  });
 }
+
+/* confeti dorado al terminar */
+function confeti() {
+  const box = $('confetti');
+  const colores = ['#C69E60', '#E8CF9E', '#FFF4DE', '#8A6A3A'];
+  box.innerHTML = Array.from({ length: 46 }, (_, i) => {
+    const l = (Math.random() * 100).toFixed(1);
+    const d = (Math.random() * 1.3).toFixed(2);
+    const t = (2.2 + Math.random() * 1.9).toFixed(2);
+    return `<i style="left:${l}%;background:${colores[i % colores.length]};
+      animation-duration:${t}s;animation-delay:${d}s;
+      transform:rotate(${Math.round(Math.random() * 180)}deg)"></i>`;
+  }).join('');
+  setTimeout(() => { box.innerHTML = ''; }, 5600);
+}
+
+/* historial plegable */
+$('histBtn').onclick = () => {
+  const abierto = $('hist').classList.toggle('open');
+  $('histBtn').classList.toggle('open', abierto);
+  $('histBtn').setAttribute('aria-expanded', abierto ? 'true' : 'false');
+};
 
 /* arranque */
 pintar();

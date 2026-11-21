@@ -130,6 +130,7 @@ def _run_job(job_id: str, nombre: str, objetivo: str, slides: int):
                     "zip": f"/media/carrusel/{rel_zip}",
                     "caption": res["caption"],
                     "dir": res["dir"],
+                    "evaluacion": res.get("evaluacion"),
                 },
             })
     except Exception as e:  # noqa: BLE001

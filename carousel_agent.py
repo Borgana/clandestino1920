@@ -313,6 +313,72 @@ def render_slide(image_path: Path, titulo: str, texto: str, index: int,
     return out_path
 
 
+def _limpiar_raw_antiguos(minutos: int = 10) -> None:
+    """Borra carpetas .raw de ejecuciones anteriores que quedaron bloqueadas."""
+    if not OUT_ROOT.exists():
+        return
+    limite = time.time() - minutos * 60
+    for viejo in OUT_ROOT.glob("*/.raw"):
+        try:
+            if viejo.is_dir() and viejo.stat().st_mtime < limite:
+                for f in viejo.glob("*"):
+                    f.unlink(missing_ok=True)
+                viejo.rmdir()
+        except OSError:
+            pass
+
+
+def evaluar_carrusel(data: dict) -> dict | None:
+    """
+    Quinto agente: corrige el carrusel como un profesor exigente.
+    Devuelve nota, criterios y un comentario. Si falla la red, devuelve None
+    (no rompe el carrusel: evaluar es opcional).
+    """
+    slides_txt = "\n".join(
+        f"{i}. {s.get('titulo','')} — {s.get('texto','')}"
+        for i, s in enumerate(data.get("slides", []), start=1)
+    )
+    prompt = f"""CARRUSEL PARA INSTAGRAM DE CLANDESTINO 1920 (speakeasy, Salamanca)
+
+Cóctel: {data.get('tema','')}
+Slides:
+{slides_txt}
+
+Pie de foto: {(data.get('caption') or '')[:700]}
+Hashtags: {' '.join((data.get('hashtags') or [])[:12])}
+
+Corrige este carrusel como un profesor exigente de marketing digital de un bootcamp.
+Sé concreto y justo. Devuelve SOLO este JSON:
+{{
+  "nota": 8.4,
+  "criterios": {{
+    "voz_de_marca": 8,
+    "claridad": 9,
+    "gancho": 8,
+    "precio_y_alergenos": 8,
+    "llamada_a_la_accion": 7
+  }},
+  "comentario": "Dos frases: una con lo que está bien y otra con lo que mejoraría."
+}}"""
+
+    try:
+        res = _llm_json(
+            "Eres un profesor de marketing digital. Evalúas contenido de marcas "
+            "con criterio profesional y devuelves siempre JSON válido.",
+            prompt,
+            max_tokens=700,
+        )
+    except Exception as e:  # noqa: BLE001
+        print(f"  ⚠ no se pudo evaluar el carrusel: {type(e).__name__}")
+        return None
+
+    try:
+        res["nota"] = round(float(res.get("nota", 0)), 1)
+    except (TypeError, ValueError):
+        res["nota"] = 0.0
+    return res
+
+
 def _slug(texto: str) -> str:
     """'Café solo' → 'cafe_solo' (sin acentos: las URLs y rutas se rompen con tildes)."""
     import unicodedata
@@ -334,6 +400,8 @@ def make_carousel(tema: str, objetivo: str = "vender", n_slides: int = 5,
         else:
             print(msg)
 
+    _limpiar_raw_antiguos()
+
     # 1. INVESTIGADOR: carta + base de conocimiento
     log("Buscando en la carta y en la historia del local…", "research")
     data = build_carousel(tema, objetivo, n_slides, progress=progress)
@@ -349,7 +417,8 @@ def make_carousel(tema: str, objetivo: str = "vender", n_slides: int = 5,
 
     # 2. ILUSTRADOR: una foto por slide (todas antes de montar, así se ven aparecer)
     for i, slide in enumerate(data["slides"], start=1):
-        log(f"Generando la foto del slide {i} de {total}…", "images", slide=i, total=total)
+        log(f"Generando la foto {i} de {total}…", "images",
+            total=total, dir=out_dir.name)
         raw = tmp_dir / f"raw_{i:02d}.png"
         try:
             generate_image(slide.get("prompt_imagen", data["tema"]), raw, style=(
@@ -360,19 +429,30 @@ def make_carousel(tema: str, objetivo: str = "vender", n_slides: int = 5,
             ))
         except Exception as e:  # noqa: BLE001
             raise RuntimeError(mensaje_red(e, "la IA de imágenes (Google Gemini)")) from e
+        log(f"Foto {i} lista", "images", slide=i, total=total, dir=out_dir.name)
 
     # 3. MONTADOR: tipografía, marca y numeración encima de cada foto
     for i, slide in enumerate(data["slides"], start=1):
-        log(f"Montando el slide {i} de {total}…", "layout", slide=i, total=total)
+        log(f"Montando el slide {i} de {total}…", "layout", total=total, dir=out_dir.name)
         out = out_dir / f"slide_{i:02d}.jpg"
         render_slide(tmp_dir / f"raw_{i:02d}.png", slide.get("titulo", ""),
                      slide.get("texto", ""), i, total, out)
         slides_files.append(out)
+        log(f"Slide {i} montado", "layout", slide=i, total=total, dir=out_dir.name)
 
-    # carpeta temporal fuera
-    for f in tmp_dir.glob("*"):
-        f.unlink()
-    tmp_dir.rmdir()
+    # limpiar la carpeta temporal. En Windows puede estar bloqueada: el panel
+    # sirve esas mismas fotos en directo mientras se generan. Se reintenta y,
+    # si sigue ocupada, se deja (se barre al principio de la siguiente ejecución).
+    for _intento in range(4):
+        try:
+            for f in tmp_dir.glob("*"):
+                f.unlink()
+            tmp_dir.rmdir()
+            break
+        except OSError:
+            time.sleep(0.5)
+    else:
+        print("  · las fotos .raw siguen en uso: se limpian en la próxima ejecución")
 
     caption = f"{data['caption']}\n\n{' '.join(data['hashtags'])}\n"
     caption_path = out_dir / "caption.txt"
@@ -389,7 +469,13 @@ def make_carousel(tema: str, objetivo: str = "vender", n_slides: int = 5,
             z.write(f, f.name)
         z.write(caption_path, "caption.txt")
 
-    log("Carrusel listo.", "done")
+    # 5. PROFESOR: corrige el carrusel (si la red lo permite)
+    log("El profesor está corrigiendo el carrusel…", "review")
+    evaluacion = evaluar_carrusel(data)
+    if evaluacion:
+        log(f"Nota del profesor: {evaluacion['nota']}/10", "review", nota=evaluacion["nota"])
+
+    log("Carrusel listo.", "done", evaluacion=evaluacion)
     return {
         "tema": data["tema"],
         "dir": str(out_dir),
@@ -397,6 +483,7 @@ def make_carousel(tema: str, objetivo: str = "vender", n_slides: int = 5,
         "caption": caption,
         "slides": [str(p) for p in slides_files],
         "estructura": data,
+        "evaluacion": evaluacion,
     }
 
 
