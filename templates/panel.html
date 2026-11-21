@@ -666,10 +666,7 @@ function seguir(job) {
       $('st-close').onclick = () => {
         cerrarEscenario(); cargarGaleria();
       };
-      // por si se queda mirando: se cierra solo en 6 s y abre el resultado
-      setTimeout(() => {
-        if (stage.classList.contains('on')) { $('st-open').click(); }
-      }, 6000);
+      // no se cierra solo: lo cierras tú para poder comentarlo
     }
 
     if (d.status === 'error') {

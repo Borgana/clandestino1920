@@ -161,8 +161,14 @@ En el panel tienes:
   a pantalla completa, flechas para pasar slides). El nuevo aparece ahí solo al terminar.
 - **Después**: las fotos del local (`assets/interior/`). Se generan solas la primera vez.
 - **Izquierda**: la carta completa (130 referencias), con pestañas por categoría y buscador.
-- **Derecha**: el cóctel elegido, el objetivo, el número de slides y el botón
-  **GENERAR CARRUSEL**.
+- **Derecha**: el estudio: el cóctel elegido, sus ingredientes y alérgenos, el objetivo,
+  el número de slides y el botón **GENERAR CARRUSEL**.
+
+Al pulsar el botón se abre el **escenario de los agentes**: cuatro tarjetas (Investigador,
+Redactor, Ilustrador, Montador) que se van encendiendo según avanza el trabajo real, con
+la barra de progreso, los slides que van saliendo y el registro en vivo. La animación no
+es decorativa: se mueve con los eventos que manda el backend (`research`, `writing`,
+`images`, `layout`, `export`, `done`).
 - **Al terminar**: las miniaturas, un botón para descargar el **ZIP** y el pie de foto
   ya escrito (se copia solo al pulsarlo).
 
