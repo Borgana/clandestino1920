@@ -1,0 +1,58 @@
+========================================
+ CLANDESTINO 1920 — COMANDOS
+========================================
+
+
+--- 1) ARRANCAR LA DEMO (el panel) ---
+
+cd C:\Proyectos\Clandestino1920
+.\.venv\Scripts\python.exe app.py
+
+Se abre solo en:  http://127.0.0.1:5000
+Para pararlo:     Ctrl+C
+
+
+--- 2) PUBLICAR LOS CAMBIOS (GitHub + Vercel) ---
+
+cd C:\Proyectos\Clandestino1920
+.\.venv\Scripts\python.exe sync_web.py
+git add -A
+git commit -m "cambios"
+git push
+vc deploy web --prod --project clandestino1920
+
+
+--- 3) SI ALGO FALLA (red, conexiones) ---
+
+cd C:\Proyectos\Clandestino1920
+.\.venv\Scripts\python.exe diagnostico.py
+
+
+--- 4) UN CARRUSEL SIN ABRIR EL PANEL ---
+
+cd C:\Proyectos\Clandestino1920
+.\.venv\Scripts\python.exe carousel_agent.py "Old Fashioned" --slides 5
+
+
+========================================
+ URLS
+========================================
+
+Presentación .......  https://clandestino1920.vercel.app
+Galería ............  https://clandestino1920.vercel.app/demo.html
+Repositorio ........  https://github.com/Borgana/clandestino1920
+Panel (solo tu PC) .  http://127.0.0.1:5000
+
+En la presentación:  -> siguiente   <- anterior
+                     N  notas del orador    F  pantalla completa
+
+
+========================================
+ NOTAS
+========================================
+
+- El panel solo funciona en tu ordenador. En Vercel está la parte
+  estática (presentación y galería).
+- Si `git push` falla por la red, espera unos segundos y repítelo.
+- Si añades carruseles nuevos, ejecuta antes `sync_web.py` para que
+  aparezcan en la galería.
