@@ -15,3 +15,6 @@ __pycache__/
 
 # Binario de ffmpeg (pesa 170 MB; cada uno se lo baja con el enlace de GUIA.md)
 /tools/ffmpeg.exe
+
+# logs de las pruebas de los .bat
+salida_*.txt
