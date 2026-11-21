@@ -3,158 +3,300 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Clandestino 1920 · Carruseles</title>
+<title>Clandestino 1920 · Estudio de contenido</title>
 <style>
   :root{
-    --bg:#0e0c0a; --panel:#17130f; --panel2:#1f1a14; --line:#33291d;
-    --gold:#c69e60; --gold-soft:#e3c795; --txt:#f2ead9; --muted:#a2917a;
-    --danger:#c2554a; --ok:#6fae7a;
+    --bg:#0B0908; --panel:#151110; --panel2:#1D1714; --line:#2E251C;
+    --gold:#C69E60; --gold-soft:#E8CF9E; --cream:#F5EEE1; --muted:#A2917A;
+    --danger:#D9635A; --ok:#7FBF8A;
   }
-  *{box-sizing:border-box}
+  *{box-sizing:border-box; margin:0; padding:0}
+  html{scroll-behavior:smooth}
   body{
-    margin:0; background:radial-gradient(1200px 600px at 50% -10%, #241c13 0%, var(--bg) 55%);
-    color:var(--txt); font-family:Georgia,'Times New Roman',serif; min-height:100vh;
+    background:
+      radial-gradient(1100px 520px at 12% -8%, #2A2015 0%, transparent 60%),
+      radial-gradient(900px 500px at 92% 0%, #1E1610 0%, transparent 55%),
+      var(--bg);
+    color:var(--cream); font-family:Georgia,'Times New Roman',serif; min-height:100vh;
+    -webkit-font-smoothing:antialiased;
   }
-  header{
-    display:flex; align-items:baseline; gap:18px; padding:26px 34px 18px;
-    border-bottom:1px solid var(--line);
+  body::after{ /* grano de película */
+    content:''; position:fixed; inset:0; pointer-events:none; opacity:.045; z-index:1;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/></filter><rect width='120' height='120' filter='url(%23n)'/></svg>");
   }
-  header h1{
-    margin:0; font-size:26px; letter-spacing:.22em; font-weight:normal; color:var(--gold-soft);
-  }
-  header span{ color:var(--muted); font-size:14px; letter-spacing:.08em }
-  header .right{ margin-left:auto; color:var(--muted); font-size:13px }
 
-  .strip{display:flex; gap:10px; padding:16px 34px; overflow-x:auto; border-bottom:1px solid var(--line)}
-  .strip img{height:104px; border-radius:6px; object-fit:cover; filter:saturate(.9) contrast(1.02);
-             border:1px solid var(--line); flex:0 0 auto}
+  /* ───────── cabecera ───────── */
+  .hero{position:relative; height:186px; overflow:hidden; border-bottom:1px solid var(--line)}
+  .hero img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+            object-position:center 55%; filter:saturate(.85) brightness(.55)}
+  .hero .veil{position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(11,9,8,.35) 0%, rgba(11,9,8,.72) 55%, var(--bg) 100%)}
+  .hero .inner{position:relative; height:100%; display:flex; align-items:flex-end;
+    justify-content:space-between; gap:24px; padding:0 42px 26px; flex-wrap:wrap}
+  .hero h1{font-size:26px; letter-spacing:.34em; font-weight:normal; color:var(--gold-soft);
+    text-shadow:0 2px 30px rgba(0,0,0,.9)}
+  .hero .tag{font-size:12px; letter-spacing:.22em; text-transform:uppercase; color:var(--muted);
+    margin-top:9px}
+  .hero .pills{display:flex; gap:10px; align-items:center}
+  .pill{font-size:11.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted);
+    border:1px solid var(--line); padding:8px 14px; border-radius:999px;
+    background:rgba(21,17,16,.65); backdrop-filter:blur(8px); text-decoration:none}
+  .pill:hover{color:var(--gold-soft); border-color:var(--gold)}
+  .pill.live{color:var(--ok); border-color:#2f4a35}
+  .pill.live::before{content:''; display:inline-block; width:6px; height:6px; border-radius:50%;
+    background:var(--ok); margin-right:7px; vertical-align:1px;
+    box-shadow:0 0 10px var(--ok); animation:latido 2.4s infinite}
+  @keyframes latido{0%,100%{opacity:1} 50%{opacity:.35}}
 
-  main{display:grid; grid-template-columns:1fr 420px; gap:26px; padding:22px 34px 60px; align-items:start}
-  @media (max-width:1000px){ main{grid-template-columns:1fr} }
+  /* ───────── layout ───────── */
+  main{display:grid; grid-template-columns:minmax(0,1fr) 430px; gap:26px;
+       padding:30px 42px 80px; align-items:start; max-width:1680px; margin:0 auto}
+  @media (max-width:1080px){ main{grid-template-columns:1fr} }
 
-  .toolbar{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px}
-  .tab{
-    background:transparent; border:1px solid var(--line); color:var(--muted);
-    padding:7px 14px; border-radius:999px; cursor:pointer; font-family:inherit; font-size:13px;
-    letter-spacing:.06em;
-  }
-  .tab.active{border-color:var(--gold); color:var(--gold-soft); background:#20190f}
-  input[type=search]{
-    margin-left:auto; background:var(--panel); border:1px solid var(--line); color:var(--txt);
-    padding:8px 14px; border-radius:999px; font-family:inherit; min-width:200px; outline:none;
-  }
-  input[type=search]:focus{border-color:var(--gold)}
+  .sec{display:flex; align-items:baseline; gap:12px; margin-bottom:16px}
+  .sec h2{font-size:11.5px; letter-spacing:.28em; text-transform:uppercase; color:var(--gold);
+    font-weight:bold}
+  .sec .count{font-size:11.5px; color:var(--muted)}
+  .sec .rule{flex:1; height:1px; background:linear-gradient(90deg,var(--line),transparent)}
 
-  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:12px}
+  /* ───────── galería de carruseles ───────── */
+  .gal{display:grid; grid-template-columns:repeat(auto-fill,minmax(148px,1fr)); gap:14px;
+       margin-bottom:38px}
+  .car{position:relative; border:1px solid var(--line); border-radius:12px; overflow:hidden;
+       cursor:pointer; background:var(--panel); transition:transform .25s cubic-bezier(.2,.8,.3,1),
+       border-color .25s, box-shadow .25s}
+  .car:hover{transform:translateY(-4px); border-color:var(--gold);
+    box-shadow:0 18px 40px rgba(0,0,0,.55), 0 0 0 1px rgba(198,158,96,.25)}
+  .car img{width:100%; aspect-ratio:4/5; object-fit:cover; display:block;
+    transition:transform .6s cubic-bezier(.2,.8,.3,1)}
+  .car:hover img{transform:scale(1.06)}
+  .car .m{padding:10px 12px; font-size:12.5px; line-height:1.35}
+  .car .m span{display:block; color:var(--muted); font-size:10.5px; margin-top:3px;
+    letter-spacing:.06em; text-transform:uppercase}
+  .car::after{content:'ver'; position:absolute; top:10px; right:10px; font-size:10px;
+    letter-spacing:.14em; text-transform:uppercase; color:var(--gold-soft);
+    background:rgba(11,9,8,.78); border:1px solid var(--line); padding:4px 9px; border-radius:999px;
+    opacity:0; transition:opacity .2s}
+  .car:hover::after{opacity:1}
 
-  /* --- galería de carruseles ya generados --- */
-  .sec{font-size:11.5px; letter-spacing:2.6px; color:var(--gold); font-weight:bold;
-       text-transform:uppercase; margin:0 0 12px}
-  .gal{display:grid; grid-template-columns:repeat(auto-fill,minmax(118px,1fr)); gap:10px;
-       margin-bottom:28px}
-  .car{border:1px solid var(--line); border-radius:8px; overflow:hidden; cursor:pointer;
-       background:var(--panel); transition:.15s}
-  .car:hover{border-color:var(--gold); transform:translateY(-2px)}
-  .car img{width:100%; aspect-ratio:4/5; object-fit:cover; display:block}
-  .car .m{padding:7px 9px; font-size:11px; color:var(--txt)}
-  .car .m span{display:block; color:var(--muted); font-size:10px; margin-top:2px}
+  /* ───────── carta ───────── */
+  .toolbar{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:16px}
+  .tab{background:rgba(21,17,16,.7); border:1px solid var(--line); color:var(--muted);
+    padding:8px 15px; border-radius:999px; cursor:pointer; font-family:inherit; font-size:12.5px;
+    letter-spacing:.05em; transition:.2s}
+  .tab:hover{color:var(--cream); border-color:#4A3B27}
+  .tab.on{border-color:var(--gold); color:var(--gold-soft); background:#221A11;
+    box-shadow:0 0 22px rgba(198,158,96,.16) inset}
+  input[type=search]{margin-left:auto; background:var(--panel); border:1px solid var(--line);
+    color:var(--cream); padding:10px 16px; border-radius:999px; font-family:inherit;
+    font-size:12.5px; min-width:230px; outline:none; transition:.2s}
+  input[type=search]:focus{border-color:var(--gold); box-shadow:0 0 0 3px rgba(198,158,96,.12)}
+
+  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(212px,1fr)); gap:12px}
+  .card{position:relative; background:linear-gradient(160deg,var(--panel2),var(--panel));
+    border:1px solid var(--line); border-radius:11px; padding:15px 16px 14px; cursor:pointer;
+    transition:transform .22s cubic-bezier(.2,.8,.3,1), border-color .22s, box-shadow .22s;
+    overflow:hidden}
+  .card::before{content:''; position:absolute; inset:0;
+    background:radial-gradient(220px 90px at 100% 0%, rgba(198,158,96,.12), transparent 70%);
+    opacity:0; transition:opacity .25s}
+  .card:hover{transform:translateY(-3px); border-color:#584325;
+    box-shadow:0 14px 30px rgba(0,0,0,.45)}
+  .card:hover::before{opacity:1}
+  .card.on{border-color:var(--gold); background:#241C12;
+    box-shadow:0 0 0 1px var(--gold) inset, 0 16px 34px rgba(0,0,0,.5)}
+  .card.on::after{content:'✓'; position:absolute; top:12px; right:13px; color:var(--gold);
+    font-size:13px}
+  .card h3{font-size:15.5px; font-weight:normal; margin-bottom:6px; padding-right:52px}
+  .card .sub{font-size:10.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.12em}
+  .card .price{position:absolute; top:12px; right:13px; color:var(--gold); font-size:13px;
+    font-variant-numeric:tabular-nums}
+  .card.on .price{display:none}
   .vacio{color:var(--muted); font-size:13px; font-style:italic; margin-bottom:26px}
 
-  /* --- visor a pantalla completa --- */
-  #viewer{position:fixed; inset:0; background:rgba(6,5,4,.96); display:none;
-          place-items:center; z-index:30; padding:40px}
-  #viewer.on{display:grid}
-  #viewer img{max-height:84vh; max-width:78vw; border-radius:10px;
-              box-shadow:0 30px 80px rgba(0,0,0,.6)}
-  #viewer .vn{position:fixed; top:50%; transform:translateY(-50%); width:52px; height:52px;
-              border-radius:50%; border:1px solid var(--line); background:rgba(20,16,12,.85);
-              color:var(--gold-soft); font-size:22px; cursor:pointer; display:grid; place-items:center}
-  #viewer .vn.prev{left:24px} #viewer .vn.next{right:24px}
-  #vx{position:fixed; top:18px; right:24px; font-size:28px; color:var(--muted);
-      background:none; border:none; cursor:pointer}
-  #vc{position:fixed; top:24px; left:24px; font-size:12.5px; color:var(--muted)}
-  #vcap{position:fixed; left:50%; bottom:18px; transform:translateX(-50%); max-width:70ch;
-        font-size:12.5px; color:var(--muted); text-align:center; line-height:1.5}
-  .card{
-    background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:14px 16px;
-    cursor:pointer; transition:.15s; position:relative;
-  }
-  .card:hover{border-color:#5a4526; background:var(--panel2); transform:translateY(-1px)}
-  .card.selected{border-color:var(--gold); background:#241c11; box-shadow:0 0 0 1px var(--gold) inset}
-  .card h3{margin:0 0 4px; font-size:16px; font-weight:normal; letter-spacing:.02em}
-  .card .sub{font-size:11.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.1em}
-  .card .price{position:absolute; top:13px; right:14px; color:var(--gold); font-size:14px}
+  /* ───────── estudio (columna derecha) ───────── */
+  aside{position:sticky; top:22px}
+  .studio{background:linear-gradient(180deg,#181310,#120F0D); border:1px solid var(--line);
+    border-radius:16px; padding:24px; box-shadow:0 30px 70px rgba(0,0,0,.5)}
+  .studio .eyebrow{font-size:10.5px; letter-spacing:.26em; text-transform:uppercase;
+    color:var(--gold); font-weight:bold}
+  .studio h2{font-size:25px; font-weight:normal; margin-top:10px; line-height:1.15}
+  .studio .meta{font-size:12.5px; color:var(--muted); margin-top:8px; min-height:34px;
+    line-height:1.5}
+  .chips{display:flex; flex-wrap:wrap; gap:6px; margin-top:14px}
+  .chip{font-size:10.5px; letter-spacing:.07em; color:var(--muted); border:1px solid var(--line);
+    border-radius:999px; padding:5px 10px}
+  .chip.al{color:#C98F86; border-color:#4a2f2b}
 
-  aside{
-    background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:20px;
-    position:sticky; top:20px;
-  }
-  aside h2{margin:0 0 2px; font-size:19px; font-weight:normal; letter-spacing:.03em}
-  aside .meta{color:var(--muted); font-size:12.5px; margin-bottom:16px}
-  .field{margin-bottom:14px}
-  .field label{display:block; font-size:12px; letter-spacing:.12em; text-transform:uppercase;
-               color:var(--muted); margin-bottom:6px}
-  select, .num{
-    width:100%; background:var(--panel2); color:var(--txt); border:1px solid var(--line);
-    border-radius:8px; padding:9px 12px; font-family:inherit; font-size:14px;
-  }
-  button.go{
-    width:100%; padding:13px; border-radius:8px; border:1px solid var(--gold);
-    background:linear-gradient(180deg,#d8b579,#b98f4c); color:#1a1208;
-    font-family:inherit; font-size:15px; letter-spacing:.10em; cursor:pointer;
-  }
-  button.go:disabled{opacity:.45; cursor:not-allowed}
-  .log{
-    margin-top:14px; font-family:ui-monospace,Consolas,monospace; font-size:11.5px;
-    color:var(--muted); max-height:130px; overflow-y:auto; line-height:1.7;
-    border-left:2px solid var(--line); padding-left:10px;
-  }
-  .log div:last-child{color:var(--gold-soft)}
-  .spinner{display:inline-block; width:11px;height:11px; border:2px solid var(--line);
-           border-top-color:var(--gold); border-radius:50%; animation:sp .8s linear infinite;
-           margin-right:7px; vertical-align:-1px}
-  @keyframes sp{to{transform:rotate(360deg)}}
+  .field{margin-top:22px}
+  .field label{display:block; font-size:10.5px; letter-spacing:.22em; text-transform:uppercase;
+    color:var(--muted); margin-bottom:9px}
+  .seg{display:flex; gap:6px; flex-wrap:wrap}
+  .seg button{flex:1; min-width:62px; background:var(--panel2); border:1px solid var(--line);
+    color:var(--muted); border-radius:9px; padding:10px 6px; font-family:inherit; font-size:12.5px;
+    cursor:pointer; transition:.18s}
+  .seg button:hover{border-color:#4A3B27; color:var(--cream)}
+  .seg button.on{border-color:var(--gold); color:#1A1208;
+    background:linear-gradient(180deg,var(--gold-soft),var(--gold)); font-weight:bold}
 
-  .result{margin-top:16px; display:none}
-  .result.on{display:block}
-  .thumbs{display:grid; grid-template-columns:repeat(3,1fr); gap:6px; margin-bottom:12px}
-  .thumbs img{width:100%; border-radius:5px; border:1px solid var(--line); cursor:zoom-in}
+  button.go{position:relative; width:100%; margin-top:26px; padding:16px; border-radius:11px;
+    border:1px solid #E0BE86; cursor:pointer; font-family:inherit; font-size:14.5px;
+    letter-spacing:.14em; text-transform:uppercase; color:#1A1208;
+    background:linear-gradient(180deg,#EBD3A4,#C69E60 65%,#A87F41);
+    box-shadow:0 14px 34px rgba(198,158,96,.28), 0 0 0 0 rgba(198,158,96,.5);
+    transition:transform .18s, box-shadow .25s, filter .2s;
+    animation:respira 3.4s ease-in-out infinite}
+  button.go:hover{transform:translateY(-2px); filter:brightness(1.06)}
+  button.go:active{transform:translateY(0) scale(.99)}
+  button.go:disabled{filter:grayscale(.5) brightness(.7); cursor:not-allowed; animation:none}
+  @keyframes respira{
+    0%,100%{box-shadow:0 14px 34px rgba(198,158,96,.22), 0 0 0 0 rgba(198,158,96,.38)}
+    50%{box-shadow:0 14px 40px rgba(198,158,96,.34), 0 0 0 7px rgba(198,158,96,0)}}
+
+  .hintline{font-size:11.5px; color:var(--muted); margin-top:14px; text-align:center;
+    font-style:italic}
+  .err{margin-top:16px; color:var(--danger); font-size:12.5px; line-height:1.55;
+    font-family:ui-monospace,Consolas,monospace; white-space:pre-wrap}
+
+  /* resultado en el propio estudio */
+  .result{margin-top:20px; display:none}
+  .result.on{display:block; animation:sube .5s cubic-bezier(.2,.8,.3,1) both}
+  @keyframes sube{from{opacity:0; transform:translateY(14px)} to{opacity:1; transform:none}}
+  .thumbs{display:grid; grid-template-columns:repeat(4,1fr); gap:6px; margin-bottom:14px}
+  .thumbs img{width:100%; border-radius:6px; border:1px solid var(--line); cursor:zoom-in;
+    transition:transform .25s}
+  .thumbs img:hover{transform:scale(1.05)}
   .row{display:flex; gap:8px; margin-bottom:10px}
-  .row a{
-    flex:1; text-align:center; text-decoration:none; font-size:13px; padding:9px;
-    border:1px solid var(--line); border-radius:7px; color:var(--gold-soft);
-  }
-  .row a:hover{border-color:var(--gold)}
-  textarea{
-    width:100%; height:120px; background:var(--panel2); color:var(--txt); border:1px solid var(--line);
-    border-radius:8px; padding:10px; font-family:Georgia,serif; font-size:13px; resize:vertical;
-  }
-  .err{color:var(--danger); font-size:13px; font-family:ui-monospace,monospace; white-space:pre-wrap}
-  .hint{color:var(--muted); font-size:12.5px; font-style:italic; margin-top:10px}
-  .empty{color:var(--muted); font-size:14px; padding:30px 0}
+  .row a{flex:1; text-align:center; text-decoration:none; font-size:12.5px; padding:10px;
+    border:1px solid var(--line); border-radius:9px; color:var(--gold-soft); transition:.2s}
+  .row a:hover{border-color:var(--gold); background:#1F1810}
+  textarea{width:100%; height:112px; background:#100D0B; color:var(--cream);
+    border:1px solid var(--line); border-radius:9px; padding:11px; font-family:Georgia,serif;
+    font-size:12.5px; line-height:1.5; resize:vertical}
+
+  /* ───────── VISOR ───────── */
+  #viewer{position:fixed; inset:0; background:rgba(6,5,4,.97); display:none; place-items:center;
+    z-index:40; padding:40px; backdrop-filter:blur(6px)}
+  #viewer.on{display:grid; animation:aparece .25s ease both}
+  @keyframes aparece{from{opacity:0} to{opacity:1}}
+  #viewer img{max-height:84vh; max-width:78vw; border-radius:10px;
+    box-shadow:0 40px 100px rgba(0,0,0,.75)}
+  #viewer .vn{position:fixed; top:50%; transform:translateY(-50%); width:54px; height:54px;
+    border-radius:50%; border:1px solid var(--line); background:rgba(20,16,12,.9);
+    color:var(--gold-soft); font-size:22px; cursor:pointer; display:grid; place-items:center;
+    transition:.2s}
+  #viewer .vn:hover{border-color:var(--gold); background:#241C12}
+  #viewer .vn.prev{left:26px} #viewer .vn.next{right:26px}
+  #vx{position:fixed; top:18px; right:24px; font-size:30px; color:var(--muted); background:none;
+    border:none; cursor:pointer}
+  #vc{position:fixed; top:26px; left:26px; font-size:12.5px; letter-spacing:.1em; color:var(--muted)}
+  #vcap{position:fixed; left:50%; bottom:20px; transform:translateX(-50%); max-width:72ch;
+    font-size:12.5px; color:var(--muted); text-align:center; line-height:1.5}
+
+  /* ───────── ESCENARIO DE AGENTES ───────── */
+  #stage{position:fixed; inset:0; z-index:50; display:none; place-items:center;
+    background:radial-gradient(900px 600px at 50% 40%, #1C150E 0%, #080706 70%);
+    backdrop-filter:blur(10px)}
+  #stage.on{display:grid; animation:aparece .3s ease both}
+  #stage .bg{position:absolute; inset:-20%; opacity:.5; pointer-events:none;
+    background:conic-gradient(from 0deg, transparent 0deg, rgba(198,158,96,.10) 80deg,
+      transparent 160deg, rgba(198,158,96,.06) 260deg, transparent 340deg);
+    animation:gira 26s linear infinite}
+  @keyframes gira{to{transform:rotate(360deg)}}
+
+  .stagebox{position:relative; width:min(1020px,92vw); padding:34px 38px 30px}
+  .stagebox .top{display:flex; justify-content:space-between; align-items:baseline; gap:16px;
+    margin-bottom:6px}
+  .stagebox .top h2{font-size:23px; font-weight:normal}
+  .stagebox .top h2 b{color:var(--gold-soft)}
+  .timer{font-size:12px; color:var(--muted); font-variant-numeric:tabular-nums;
+    border:1px solid var(--line); padding:6px 12px; border-radius:999px}
+  .stagebox .sub{font-size:12px; color:var(--muted); letter-spacing:.08em; margin-bottom:26px}
+
+  .agents{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; position:relative}
+  .agent{position:relative; border:1px solid var(--line); border-radius:14px; padding:18px 16px;
+    background:linear-gradient(180deg,#171210,#100D0B); text-align:center;
+    transition:transform .45s cubic-bezier(.2,.8,.3,1), border-color .45s, box-shadow .45s,
+      opacity .45s; opacity:.42; filter:saturate(.3)}
+  .agent .ico{width:46px; height:46px; margin:0 auto 12px; border-radius:50%;
+    display:grid; place-items:center; font-size:20px; border:1px solid var(--line);
+    background:#0E0B09; transition:.45s}
+  .agent .nm{font-size:13.5px; letter-spacing:.02em}
+  .agent .ds{font-size:10.5px; color:var(--muted); margin-top:5px; line-height:1.4}
+  .agent .st{font-size:10px; letter-spacing:.16em; text-transform:uppercase; margin-top:12px;
+    color:var(--muted); min-height:13px}
+  .agent.active{opacity:1; filter:none; transform:translateY(-5px) scale(1.025);
+    border-color:var(--gold); box-shadow:0 20px 46px rgba(0,0,0,.6),
+      0 0 0 1px rgba(198,158,96,.35), 0 0 60px rgba(198,158,96,.18)}
+  .agent.active .ico{border-color:var(--gold); background:#241C12;
+    box-shadow:0 0 26px rgba(198,158,96,.45); animation:flota 2.6s ease-in-out infinite}
+  .agent.active .st{color:var(--gold-soft)}
+  @keyframes flota{0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)}}
+  .agent.done{opacity:1; filter:none; border-color:#3E5A43}
+  .agent.done .ico{border-color:#3E5A43; color:var(--ok)}
+  .agent.done .st{color:var(--ok)}
+
+  .rail{position:relative; height:2px; margin:26px 4px 22px; background:var(--line);
+    border-radius:2px; overflow:hidden}
+  .rail .fill{position:absolute; inset:0 auto 0 0; width:0;
+    background:linear-gradient(90deg,var(--gold),var(--gold-soft));
+    box-shadow:0 0 18px rgba(198,158,96,.8); transition:width .8s cubic-bezier(.2,.8,.3,1)}
+
+  .console{font-family:ui-monospace,Consolas,monospace; font-size:11.5px; line-height:1.9;
+    color:var(--muted); min-height:74px; border-left:2px solid var(--line); padding-left:14px}
+  .console div{animation:entra .35s ease both}
+  @keyframes entra{from{opacity:0; transform:translateX(-6px)} to{opacity:1; transform:none}}
+  .console div:last-child{color:var(--gold-soft)}
+
+  .dots{display:flex; gap:8px; align-items:center; margin-top:18px}
+  .dots .lb{font-size:10.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--muted)}
+  .dots i{width:26px; height:5px; border-radius:3px; background:#241D16; transition:.4s}
+  .dots i.on{background:var(--gold); box-shadow:0 0 12px rgba(198,158,96,.7)}
+
+  .finish{display:none; margin-top:20px; text-align:center}
+  .finish.on{display:block; animation:sube .5s both}
+  .finish .ok{font-size:13px; letter-spacing:.1em; color:var(--ok)}
+  .finish .row{margin-top:14px}
+  .finish button{border:1px solid var(--gold); background:transparent; color:var(--gold-soft);
+    padding:11px 22px; border-radius:999px; font-family:inherit; font-size:12.5px;
+    letter-spacing:.12em; text-transform:uppercase; cursor:pointer; margin:0 5px;
+    transition:.2s}
+  .finish button:hover{background:#241C12}
 </style>
 </head>
 <body>
 
-<header>
-  <h1>CLANDESTINO 1920</h1>
-  <span>· generador de carruseles</span>
-  <div class="right">{{ total }} referencias en carta</div>
+<header class="hero">
+  <img src="/media/interior/interior_01.jpg" alt="Interior de Clandestino 1920">
+  <div class="veil"></div>
+  <div class="inner">
+    <div>
+      <h1>CLANDESTINO 1920</h1>
+      <div class="tag">Estudio de contenido · {{ total }} referencias en carta</div>
+    </div>
+    <div class="pills">
+      <span class="pill live">Sistema activo</span>
+      <a class="pill" href="https://clandestino1920.vercel.app/demo.html" target="_blank" rel="noopener">Galería web</a>
+    </div>
+  </div>
 </header>
-
-{% if fotos %}
-<div class="strip">
-  {% for f in fotos %}<img src="/media/interior/{{ f }}" alt="Interior del local">{% endfor %}
-</div>
-{% endif %}
 
 <main>
   <section>
-    <h2 class="sec">Carruseles generados</h2>
+    <div class="sec">
+      <h2>Carruseles generados</h2>
+      <span class="count" id="galCount"></span>
+      <span class="rule"></span>
+    </div>
     <div class="gal" id="gal"></div>
-    <p class="vacio" id="galVacio" style="display:none">Todavía no hay ninguno: genera el primero con el botón de la derecha.</p>
+    <p class="vacio" id="galVacio" style="display:none">
+      Todavía no hay ninguno. Elige un cóctel a la derecha y pulsa generar.</p>
 
-    <h2 class="sec">Carta</h2>
+    <div class="sec">
+      <h2>La carta</h2>
+      <span class="count">clic para elegir</span>
+      <span class="rule"></span>
+    </div>
     <div class="toolbar">
       {% for c in categorias %}
         <button class="tab" data-cat="{{ c }}">{{ c }}</button>
@@ -162,50 +304,54 @@
       <input type="search" id="buscar" placeholder="Buscar en la carta…">
     </div>
     <div class="grid" id="grid"></div>
-    <p class="empty" id="vacio" style="display:none">Nada con ese nombre.</p>
+    <p class="vacio" id="vacio" style="display:none">Nada con ese nombre.</p>
   </section>
 
   <aside>
-    <h2 id="sel-nombre">Elige un cóctel</h2>
-    <div class="meta" id="sel-meta">A la izquierda tienes la carta completa.</div>
+    <div class="studio">
+      <div class="eyebrow">Estudio</div>
+      <h2 id="sel-nombre">Elige un cóctel</h2>
+      <div class="meta" id="sel-meta">A la izquierda tienes la carta completa del local.</div>
+      <div class="chips" id="sel-chips"></div>
 
-    <div class="field">
-      <label>Objetivo</label>
-      <select id="objetivo">
-        <option value="vender">Vender</option>
-        <option value="educar">Educar</option>
-        <option value="entretener">Entretener</option>
-        <option value="fidelizar">Fidelizar</option>
-        <option value="anunciar">Anunciar</option>
-      </select>
-    </div>
-
-    <div class="field">
-      <label>Número de slides</label>
-      <select id="slides">
-        <option>3</option><option>4</option><option selected>5</option>
-        <option>6</option><option>7</option><option>8</option>
-      </select>
-    </div>
-
-    <button class="go" id="btn" disabled>GENERAR CARRUSEL</button>
-
-    <div class="log" id="log"></div>
-
-    <div class="result" id="result">
-      <div class="thumbs" id="thumbs"></div>
-      <div class="row">
-        <a id="zip" href="#">Descargar ZIP</a>
-        <a id="folder" href="#" onclick="return false;">Carpeta</a>
+      <div class="field">
+        <label>Objetivo</label>
+        <div class="seg" id="seg-obj">
+          <button data-v="vender" class="on">Vender</button>
+          <button data-v="educar">Educar</button>
+          <button data-v="entretener">Entretener</button>
+          <button data-v="anunciar">Anunciar</button>
+        </div>
       </div>
-      <textarea id="caption" readonly></textarea>
-      <p class="hint">El pie de foto se copia solo al pulsarlo.</p>
-    </div>
 
-    <div class="err" id="err"></div>
+      <div class="field">
+        <label>Slides</label>
+        <div class="seg" id="seg-num">
+          <button data-v="3">3</button>
+          <button data-v="4">4</button>
+          <button data-v="5" class="on">5</button>
+          <button data-v="6">6</button>
+          <button data-v="7">7</button>
+        </div>
+      </div>
+
+      <button class="go" id="btn" disabled>Generar carrusel</button>
+      <p class="hintline">Tres agentes y un montador trabajando a la vez</p>
+      <div class="err" id="err"></div>
+
+      <div class="result" id="result">
+        <div class="thumbs" id="thumbs"></div>
+        <div class="row">
+          <a id="zip" href="#">Descargar ZIP</a>
+          <a id="folder" href="#" onclick="return false;">Ruta</a>
+        </div>
+        <textarea id="caption" readonly></textarea>
+      </div>
+    </div>
   </aside>
 </main>
 
+<!-- visor -->
 <div id="viewer">
   <button id="vx">×</button>
   <div id="vc"></div>
@@ -215,174 +361,342 @@
   <div id="vcap"></div>
 </div>
 
+<!-- escenario de los agentes -->
+<div id="stage">
+  <div class="bg"></div>
+  <div class="stagebox">
+    <div class="top">
+      <h2>Generando el carrusel de <b id="st-tema">…</b></h2>
+      <span class="timer" id="st-timer">0,0 s</span>
+    </div>
+    <div class="sub" id="st-sub">Los agentes están trabajando</div>
+
+    <div class="agents">
+      <div class="agent" data-stage="research">
+        <div class="ico">⌕</div>
+        <div class="nm">Investigador</div>
+        <div class="ds">carta, historia y alérgenos</div>
+        <div class="st">en espera</div>
+      </div>
+      <div class="agent" data-stage="writing">
+        <div class="ico">✎</div>
+        <div class="nm">Redactor</div>
+        <div class="ds">títulos, textos y pie de foto</div>
+        <div class="st">en espera</div>
+      </div>
+      <div class="agent" data-stage="images">
+        <div class="ico">◉</div>
+        <div class="nm">Ilustrador</div>
+        <div class="ds">una foto por slide</div>
+        <div class="st">en espera</div>
+      </div>
+      <div class="agent" data-stage="layout">
+        <div class="ico">▤</div>
+        <div class="nm">Montador</div>
+        <div class="ds">tipografía, marca y ZIP</div>
+        <div class="st">en espera</div>
+      </div>
+    </div>
+
+    <div class="rail"><div class="fill" id="st-fill"></div></div>
+    <div class="console" id="st-console"></div>
+    <div class="dots"><span class="lb">Slides</span><span id="st-dots"></span></div>
+
+    <div class="finish" id="st-finish">
+      <div class="ok">✓ Carrusel listo</div>
+      <div class="row">
+        <button id="st-open">Ver carrusel</button>
+        <button id="st-close">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 const ITEMS = {{ items|tojson }};
-const grid = document.getElementById('grid');
-const vacio = document.getElementById('vacio');
-const btn = document.getElementById('btn');
-const logBox = document.getElementById('log');
-const result = document.getElementById('result');
-const errBox = document.getElementById('err');
+const ORDEN = ['research','writing','images','layout','export'];
 
+/* ───────── estado ───────── */
 let catActiva = 'Cócteles';
 let seleccion = null;
 let polling = null;
-
-/* ---------- galería de carruseles ya generados ---------- */
 let CARR = [], vIdx = 0, vSlide = 0;
-const viewer = document.getElementById('viewer');
-const vi = document.getElementById('vi');
-const vc = document.getElementById('vc');
-const vcap = document.getElementById('vcap');
+let OBJ = 'vender', NUM = 5;
 
-async function cargarGaleria(){
-  try{
-    const r = await fetch('/api/carruseles');
-    CARR = await r.json();
-  }catch(e){ CARR = []; }
+const $ = id => document.getElementById(id);
+const grid = $('grid'), btn = $('btn'), result = $('result'), errBox = $('err');
 
-  const gal = document.getElementById('gal');
-  gal.innerHTML = CARR.map((c,k) => `
-    <div class="car" data-k="${k}">
-      <img src="${c.slides[0]}" alt="${c.tema}">
-      <div class="m">${c.tema}<span>${c.slides.length} slides</span></div>
-    </div>`).join('');
-  gal.querySelectorAll('.car').forEach(el =>
-    el.onclick = () => abrirVisor(+el.dataset.k));
-  document.getElementById('galVacio').style.display = CARR.length ? 'none' : 'block';
-}
+/* ───────── carta ───────── */
+function pintar() {
+  const q = ($('buscar').value || '').trim().toLowerCase();
+  const lista = ITEMS.filter(i => i.categoria === catActiva &&
+    (!q || i.nombre.toLowerCase().includes(q)));
 
-function pintarVisor(){
-  const c = CARR[vIdx];
-  vi.src = c.slides[vSlide];
-  vc.textContent = `${c.tema} · ${vSlide + 1}/${c.slides.length}`;
-  vcap.textContent = c.caption ? c.caption.split('\n')[0] : '';
-}
-function abrirVisor(k){ vIdx = k; vSlide = 0; viewer.classList.add('on'); pintarVisor(); }
-function cerrarVisor(){ viewer.classList.remove('on'); }
-function moverVisor(d){
-  const c = CARR[vIdx];
-  vSlide = (vSlide + d + c.slides.length) % c.slides.length;
-  pintarVisor();
-}
-document.getElementById('vx').onclick = cerrarVisor;
-document.getElementById('vn').onclick = e => { e.stopPropagation(); moverVisor(1); };
-document.getElementById('vp').onclick = e => { e.stopPropagation(); moverVisor(-1); };
-viewer.addEventListener('click', e => { if(e.target === viewer) cerrarVisor(); });
-document.addEventListener('keydown', e => {
-  if(!viewer.classList.contains('on')) return;
-  if(e.key === 'Escape') cerrarVisor();
-  if(e.key === 'ArrowRight') moverVisor(1);
-  if(e.key === 'ArrowLeft') moverVisor(-1);
-});
-
-function pintar(){
-  const q = document.getElementById('buscar').value.trim().toLowerCase();
-  grid.innerHTML = '';
-  const lista = ITEMS.filter(i =>
-    (catActiva ? i.categoria === catActiva : true) &&
-    (!q || i.nombre.toLowerCase().includes(q))
-  );
-  vacio.style.display = lista.length ? 'none' : 'block';
-
-  lista.forEach(i => {
-    const d = document.createElement('div');
-    d.className = 'card' + (seleccion && seleccion.nombre === i.nombre ? ' selected' : '');
-    d.innerHTML = `<h3>${i.nombre}</h3>
+  grid.innerHTML = lista.map(i => {
+    const on = seleccion && seleccion.nombre === i.nombre ? ' on' : '';
+    return `<div class="card${on}" data-n="${i.nombre}">
+      <h3>${i.nombre}</h3>
       <div class="sub">${i.subcategoria || i.categoria}</div>
-      ${i.precio ? `<div class="price">${i.precio.toFixed(2).replace('.',',')} €</div>` : ''}`;
-    d.onclick = () => elegir(i);
-    grid.appendChild(d);
+      ${i.precio ? `<div class="price">${i.precio.toFixed(2).replace('.', ',')} €</div>` : ''}
+    </div>`;
+  }).join('');
+
+  grid.querySelectorAll('.card').forEach(el => {
+    const item = ITEMS.find(x => x.nombre === el.dataset.n);
+    el.onclick = () => elegir(item);
   });
+  $('vacio').style.display = lista.length ? 'none' : 'block';
 }
 
-function elegir(item){
+function elegir(item) {
   seleccion = item;
-  document.getElementById('sel-nombre').textContent = item.nombre;
-  const al = (item.alergenos || []).join(', ');
-  document.getElementById('sel-meta').innerHTML =
-    `${item.precio ? item.precio.toFixed(2).replace('.',',')+' € · ' : ''}` +
-    `${item.ingredientes ? item.ingredientes.slice(0,4).join(', ') : ''}` +
-    `${al ? ' · alérgenos: '+al : ''}`;
+  $('sel-nombre').textContent = item.nombre;
+  const al = (item.alergenos || []);
+  const precio = item.precio
+    ? `<span style="color:var(--gold-soft)">${item.precio.toFixed(2).replace('.', ',')} €</span> · `
+    : '';
+  const desc = item.descripcion || '';
+  $('sel-meta').innerHTML = precio + (desc.length > 96 ? desc.slice(0, 96) + '…' : desc);
+
+  $('sel-chips').innerHTML =
+    (item.ingredientes || []).slice(0, 5).map(x => `<span class="chip">${x}</span>`).join('') +
+    al.map(x => `<span class="chip al">alérgeno: ${x}</span>`).join('');
+
   btn.disabled = false;
   result.classList.remove('on');
   errBox.textContent = '';
-  logBox.innerHTML = '';
   pintar();
 }
 
 document.querySelectorAll('.tab').forEach(t => {
   t.onclick = () => {
-    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
-    t.classList.add('active');
+    document.querySelectorAll('.tab').forEach(x => x.classList.toggle('on', x === t));
     catActiva = t.dataset.cat;
     pintar();
   };
 });
-document.querySelector('.tab').classList.add('active');
-document.getElementById('buscar').oninput = pintar;
-pintar();
-cargarGaleria();
+document.querySelector('.tab').classList.add('on');
+$('buscar').oninput = pintar;
 
+/* segmentos */
+$('seg-obj').querySelectorAll('button').forEach(b => b.onclick = () => {
+  $('seg-obj').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+  OBJ = b.dataset.v;
+});
+$('seg-num').querySelectorAll('button').forEach(b => b.onclick = () => {
+  $('seg-num').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+  NUM = +b.dataset.v;
+});
+
+/* ───────── galería ───────── */
+async function cargarGaleria() {
+  try { CARR = await (await fetch('/api/carruseles')).json(); } catch (e) { CARR = []; }
+  $('gal').innerHTML = CARR.map((c, k) => `
+    <div class="car" data-k="${k}">
+      <img src="${c.slides[0]}" alt="${c.tema}">
+      <div class="m">${c.tema}<span>${c.slides.length} slides</span></div>
+    </div>`).join('');
+  $('gal').querySelectorAll('.car').forEach(el =>
+    el.onclick = () => abrirVisor(+el.dataset.k));
+  $('galCount').textContent = CARR.length ? `${CARR.length} carruseles` : '';
+  $('galVacio').style.display = CARR.length ? 'none' : 'block';
+}
+
+/* visor */
+function pintarVisor() {
+  const c = CARR[vIdx];
+  $('vi').src = c.slides[vSlide];
+  $('vc').textContent = `${c.tema} · ${vSlide + 1}/${c.slides.length}`;
+  $('vcap').textContent = c.caption ? c.caption.split('\n')[0] : '';
+}
+function abrirVisor(k) { vIdx = k; vSlide = 0; $('viewer').classList.add('on'); pintarVisor(); }
+function cerrarVisor() { $('viewer').classList.remove('on'); }
+function moverVisor(d) {
+  const c = CARR[vIdx];
+  vSlide = (vSlide + d + c.slides.length) % c.slides.length;
+  pintarVisor();
+}
+$('vx').onclick = cerrarVisor;
+$('vn').onclick = e => { e.stopPropagation(); moverVisor(1); };
+$('vp').onclick = e => { e.stopPropagation(); moverVisor(-1); };
+$('viewer').addEventListener('click', e => { if (e.target.id === 'viewer') cerrarVisor(); });
+addEventListener('keydown', e => {
+  if (!$('viewer').classList.contains('on')) return;
+  if (e.key === 'Escape') cerrarVisor();
+  if (e.key === 'ArrowRight') moverVisor(1);
+  if (e.key === 'ArrowLeft') moverVisor(-1);
+});
+
+/* ───────── escenario de agentes ───────── */
+const stage = $('stage');
+let t0 = 0, timerInt = null, stageIdx = -1;
+
+function agenteDe(s) {
+  return { research: 'research', writing: 'writing', images: 'images',
+           layout: 'layout', export: 'layout', done: 'layout' }[s];
+}
+
+function entrarEscenario(nombre) {
+  stageIdx = -1;
+  $('st-tema').textContent = nombre;
+  $('st-sub').textContent = NUM + ' slides · objetivo: ' + OBJ;
+  $('st-console').innerHTML = '';
+  $('st-fill').style.width = '4%';
+  $('st-finish').classList.remove('on');
+  $('st-dots').innerHTML = Array.from({ length: NUM },
+    () => '<i></i>').join('');
+  document.querySelectorAll('#stage .agent').forEach(a => {
+    a.classList.remove('active', 'done');
+    a.querySelector('.st').textContent = 'en espera';
+  });
+  stage.classList.add('on');
+  t0 = Date.now();
+  clearInterval(timerInt);
+  timerInt = setInterval(() => {
+    $('st-timer').textContent = ((Date.now() - t0) / 1000).toFixed(1).replace('.', ',') + ' s';
+  }, 100);
+}
+
+function cerrarEscenario() {
+  stage.classList.remove('on');
+  clearInterval(timerInt);
+}
+
+function aplicarEventos(events) {
+  const cons = $('st-console');
+  cons.innerHTML = events.slice(-4).map(e => `<div>${e.msg}</div>`).join('');
+  if (!events.length) return;
+
+  const ultimo = events[events.length - 1];
+  const stageReal = ultimo.stage;
+
+  // progreso de la barra
+  const idx = ORDEN.indexOf(stageReal === 'done' ? 'export' : stageReal);
+  if (idx >= 0) $('st-fill').style.width = ((idx + 1) / ORDEN.length) * 100 + '%';
+
+  // marcar agentes
+  const actual = agenteDe(stageReal);
+  const ordenAgentes = ['research', 'writing', 'images', 'layout'];
+  const posActual = ordenAgentes.indexOf(actual);
+
+  document.querySelectorAll('#stage .agent').forEach(a => {
+    const pos = ordenAgentes.indexOf(a.dataset.stage);
+    a.classList.toggle('done', pos < posActual || stageReal === 'done');
+    const activo = pos === posActual && stageReal !== 'done';
+    a.classList.toggle('active', activo);
+    const st = a.querySelector('.st');
+    if (pos < posActual || stageReal === 'done') st.textContent = 'listo';
+    else if (activo) {
+      if (stageReal === 'images' && ultimo.slide) st.textContent = `foto ${ultimo.slide} de ${ultimo.total || NUM}`;
+      else if (stageReal === 'layout' && ultimo.slide) st.textContent = `slide ${ultimo.slide} de ${ultimo.total || NUM}`;
+      else st.textContent = 'trabajando';
+    } else st.textContent = 'en espera';
+  });
+
+  // puntitos de slides
+  if ((stageReal === 'images' || stageReal === 'layout') && ultimo.slide) {
+    const dots = $('st-dots').children;
+    for (let i = 0; i < dots.length; i++) dots[i].classList.toggle('on', i < ultimo.slide);
+  }
+}
+
+/* ───────── generar ───────── */
 btn.onclick = async () => {
-  if(!seleccion) return;
+  if (!seleccion) return;
   btn.disabled = true;
   result.classList.remove('on');
   errBox.textContent = '';
-  logBox.innerHTML = '<div><span class="spinner"></span>Arrancando…</div>';
+  entrarEscenario(seleccion.nombre);
 
-  const r = await fetch('/api/generar', {
-    method:'POST', headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({
-      nombre: seleccion.nombre,
-      objetivo: document.getElementById('objetivo').value,
-      slides: parseInt(document.getElementById('slides').value)
-    })
-  });
+  let r;
+  try {
+    r = await fetch('/api/generar', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nombre: seleccion.nombre, objetivo: OBJ, slides: NUM })
+    });
+  } catch (e) {
+    cerrarEscenario(); btn.disabled = false;
+    errBox.textContent = 'No hay conexión con el servidor del panel.';
+    return;
+  }
+
   const data = await r.json();
-  if(!r.ok){ errBox.textContent = data.error || 'Error'; btn.disabled=false; return; }
+  if (!r.ok) {
+    cerrarEscenario(); btn.disabled = false;
+    errBox.textContent = data.error || 'Error al arrancar';
+    return;
+  }
   seguir(data.job);
 };
 
-function seguir(job){
+function seguir(job) {
   clearInterval(polling);
   polling = setInterval(async () => {
-    const r = await fetch('/api/job/' + job);
-    const d = await r.json();
+    let d;
+    try { d = await (await fetch('/api/job/' + job)).json(); }
+    catch (e) { return; }
 
-    logBox.innerHTML = d.log.map(l => `<div>${l}</div>`).join('');
-    logBox.scrollTop = logBox.scrollHeight;
+    aplicarEventos(d.events || []);
 
-    if(d.status === 'ok'){
+    if (d.status === 'ok') {
       clearInterval(polling);
       btn.disabled = false;
-      logBox.innerHTML += '<div>✅ Listo</div>';
-      cargarGaleria();   // el carrusel nuevo aparece arriba sin recargar
+      clearInterval(timerInt);
+      $('st-fill').style.width = '100%';
+      document.querySelectorAll('#stage .agent').forEach(a => {
+        a.classList.remove('active'); a.classList.add('done');
+        a.querySelector('.st').textContent = 'listo';
+      });
       const res = d.result;
-      document.getElementById('thumbs').innerHTML =
-        res.slides.map(s => `<img src="${s}" onclick="window.open('${s}','_blank')">`).join('');
-      document.getElementById('zip').href = res.zip;
-      document.getElementById('caption').value = res.caption;
-      document.getElementById('folder').textContent = 'Carpeta: ' + res.dir.split('\\').slice(-1);
-      document.getElementById('folder').onclick = () => {
-        navigator.clipboard.writeText(res.dir); alert('Ruta copiada:\\n' + res.dir);
+      $('st-open').onclick = () => {
+        cerrarEscenario();
+        $('thumbs').innerHTML = res.slides.map(s =>
+          `<img src="${s}" onclick="abrirSlide('${s}')">`).join('');
+        $('zip').href = res.zip;
+        $('caption').value = res.caption;
+        $('folder').onclick = () => {
+          navigator.clipboard.writeText(res.dir);
+          $('folder').textContent = 'copiada ✓';
+          setTimeout(() => $('folder').textContent = 'Ruta', 1400);
+        };
+        result.classList.add('on');
+        cargarGaleria();
       };
-      result.classList.add('on');
-      result.scrollIntoView({behavior:'smooth', block:'nearest'});
+      $('st-finish').classList.add('on');
+      $('st-close').onclick = () => {
+        cerrarEscenario(); cargarGaleria();
+      };
+      // por si se queda mirando: se cierra solo en 6 s y abre el resultado
+      setTimeout(() => {
+        if (stage.classList.contains('on')) { $('st-open').click(); }
+      }, 6000);
     }
-    if(d.status === 'error'){
+
+    if (d.status === 'error') {
       clearInterval(polling);
+      clearInterval(timerInt);
       btn.disabled = false;
-      errBox.textContent = '❌ ' + d.error + '\n\n' + (d.trace || '');
+      stage.classList.remove('on');
+      errBox.textContent = '❌ ' + d.error;
     }
-  }, 1500);
+  }, 900);
 }
 
-document.getElementById('caption').onclick = function(){
-  this.select(); navigator.clipboard.writeText(this.value);
-  const t = this.value; this.value = '✓ Copiado'; 
-  setTimeout(()=>{ this.value = t; }, 900);
-};
+function abrirSlide(url) {
+  const idx = CARR.findIndex(c => c.slides.includes(url));
+  if (idx >= 0) {
+    vIdx = idx;
+    vSlide = CARR[idx].slides.indexOf(url);
+    $('viewer').classList.add('on');
+    pintarVisor();
+    return;
+  }
+  window.open(url, '_blank');
+}
+
+/* arranque */
+pintar();
+cargarGaleria();
 </script>
 </body>
 </html>

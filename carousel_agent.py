@@ -152,8 +152,16 @@ def _llm_json(system: str, prompt: str, max_tokens: int = 2000) -> dict:
     raise RuntimeError(mensaje_red(ultimo, "el modelo de texto (Groq)"))
 
 
-def build_carousel(tema: str, objetivo: str = "vender", n_slides: int = 5) -> dict:
+def build_carousel(tema: str, objetivo: str = "vender", n_slides: int = 5,
+                   progress=None) -> dict:
     """Devuelve la estructura del carrusel (slides + caption)."""
+
+    def log(msg: str, stage: str | None = None, **extra):
+        if progress:
+            progress(msg, stage, **extra)
+        else:
+            print(msg)
+
     item = find_item(tema)
     ctx = search_context(f"{item['nombre']} {' '.join(item.get('ingredientes') or [])}", top_k=6)
     context_str = build_context_str(ctx)[:2500]
@@ -171,6 +179,8 @@ def build_carousel(tema: str, objetivo: str = "vender", n_slides: int = 5) -> di
         objetivo=objetivo,
         n=n_slides,
     )
+
+    log(f"Escribiendo la historia de «{item['nombre']}»…", "writing")
 
     completion = _llm_json(
         (
@@ -312,11 +322,21 @@ def _slug(texto: str) -> str:
 
 def make_carousel(tema: str, objetivo: str = "vender", n_slides: int = 5,
                   progress=None) -> dict:
-    """Genera el carrusel completo y devuelve rutas + textos."""
-    log = progress or (lambda msg: print(msg))
+    """
+    Genera el carrusel completo y devuelve rutas + textos.
 
-    log("Leyendo la carta y buscando contexto...")
-    data = build_carousel(tema, objetivo, n_slides)
+    `progress` recibe (mensaje, etapa, **datos). Las etapas son las que se ven
+    en el panel: research, writing, images, layout, export, done.
+    """
+    def log(msg: str, stage: str | None = None, **extra):
+        if progress:
+            progress(msg, stage, **extra)
+        else:
+            print(msg)
+
+    # 1. INVESTIGADOR: carta + base de conocimiento
+    log("Buscando en la carta y en la historia del local…", "research")
+    data = build_carousel(tema, objetivo, n_slides, progress=progress)
 
     slug = _slug(data["tema"])
     stamp = datetime.now().strftime("%Y%m%d-%H%M%S")
@@ -327,8 +347,9 @@ def make_carousel(tema: str, objetivo: str = "vender", n_slides: int = 5,
     total = len(data["slides"])
     slides_files = []
 
+    # 2. ILUSTRADOR: una foto por slide (todas antes de montar, así se ven aparecer)
     for i, slide in enumerate(data["slides"], start=1):
-        log(f"Slide {i}/{total}: {slide.get('titulo','')}")
+        log(f"Generando la foto del slide {i} de {total}…", "images", slide=i, total=total)
         raw = tmp_dir / f"raw_{i:02d}.png"
         try:
             generate_image(slide.get("prompt_imagen", data["tema"]), raw, style=(
@@ -339,8 +360,13 @@ def make_carousel(tema: str, objetivo: str = "vender", n_slides: int = 5,
             ))
         except Exception as e:  # noqa: BLE001
             raise RuntimeError(mensaje_red(e, "la IA de imágenes (Google Gemini)")) from e
+
+    # 3. MONTADOR: tipografía, marca y numeración encima de cada foto
+    for i, slide in enumerate(data["slides"], start=1):
+        log(f"Montando el slide {i} de {total}…", "layout", slide=i, total=total)
         out = out_dir / f"slide_{i:02d}.jpg"
-        render_slide(raw, slide.get("titulo", ""), slide.get("texto", ""), i, total, out)
+        render_slide(tmp_dir / f"raw_{i:02d}.png", slide.get("titulo", ""),
+                     slide.get("texto", ""), i, total, out)
         slides_files.append(out)
 
     # carpeta temporal fuera
@@ -355,14 +381,15 @@ def make_carousel(tema: str, objetivo: str = "vender", n_slides: int = 5,
     info = out_dir / "info.json"
     info.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
 
-    # ZIP listo para subir/entregar
+    # 4. EMPAQUETADO: ZIP listo para subir/entregar
+    log("Empaquetando el carrusel y el pie de foto…", "export")
     zip_path = out_dir.with_suffix(".zip")
     with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as z:
         for f in sorted(out_dir.glob("slide_*.jpg")):
             z.write(f, f.name)
         z.write(caption_path, "caption.txt")
 
-    log("Carrusel listo.")
+    log("Carrusel listo.", "done")
     return {
         "tema": data["tema"],
         "dir": str(out_dir),

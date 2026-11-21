@@ -110,9 +110,10 @@ def api_carta():
 
 
 def _run_job(job_id: str, nombre: str, objetivo: str, slides: int):
-    def log(msg):
+    def log(msg: str, stage: str | None = None, **extra):
         with LOCK:
             JOBS[job_id]["log"].append(msg)
+            JOBS[job_id]["events"].append({"stage": stage, "msg": msg, **extra})
 
     try:
         res = make_carousel(nombre, objetivo, slides, progress=log)
@@ -156,7 +157,8 @@ def api_generar():
 
     job_id = uuid.uuid4().hex[:8]
     with LOCK:
-        JOBS[job_id] = {"status": "running", "log": [], "result": None, "error": None}
+        JOBS[job_id] = {"status": "running", "log": [], "events": [],
+                        "result": None, "error": None}
 
     threading.Thread(
         target=_run_job, args=(job_id, nombre, objetivo, slides), daemon=True
@@ -174,6 +176,7 @@ def api_job(job_id):
         return jsonify({
             "status": job["status"],
             "log": job["log"],
+            "events": job.get("events", []),
             "result": job["result"],
             "error": job["error"],
             "trace": job.get("trace"),
